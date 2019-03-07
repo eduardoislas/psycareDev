@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Instrumentos</h5>
+                <div class="ibox-tools">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="?status=activo">Mostrar status activo</a></li>
+                        <li><a href="?status=inactivo">Mostrar status inactivo</a></li>
+                        <li><a href="?status=todo">Mostrar todo</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ibox-content">
+                {% if instruments_list %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Instrumentos</th>
+                                <th>Descripción</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for instrument in instruments_list %}
+                            <tr>
+                                <td>{{ instrument.name }}</td>
+                                <td>{{ instrument.description }}</td>
+                                <td>
+                                    {% if instrument.status%}
+                                    <span class="label label-primary">Activo</span>
+                                    {% else %}
+                                    <span class="label label-danger">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                                <td class="fa-icons">
+                                    <a href="{% url 'add_options' instrument.id %}"><i class="fa fa-plus fa-lg text-navy"></i></a>
+                                    <a href="#"><i class="fa fa-pencil fa-lg text-muted"></i></a>
+                                    {% if instrument.status %}
+                                        <a href="{% url 'change_status_instrument' instrument.id %}" class="change-status" data-name="{{instrument.name}}" data-action="deshabilitará"><i class="fa fa-times fa-lg text-danger"></i></a>
+                                    {% else %}
+                                        <a href="{% url 'change_status_instrument' instrument.id %}" class="change-status" data-name="{{instrument.name}}" data-action="habilitará"><i class="fa fa-check fa-lg text-navy"></i></a>
+                                    {% endif %}
+                                    <a href="#"><i class="fa fa-file-text-o fa-lg text-success"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                    <p>No hay instrumentos</p>
+                {% endif %}
+                <a href="{% url 'add_instrument' %}" class="btn btn-primary">Agregar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+
+{% block custom_js %}
+
+<script>
+    $(document).on('click','.change-status', function(){
+        var objectName = $('.change-status').attr('data-name');
+        var action = $('.change-status').attr('data-action')
+        return confirm("¿Estas seguro?, se " + action + " el instrumento " + objectName);
+    });
+</script>
+
+{% endblock custom_js %}

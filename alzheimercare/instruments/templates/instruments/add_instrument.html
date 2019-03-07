@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h3>Crear Instrumento</h3>
+            </div>
+            <div class="ibox-content">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group row no-class">
+                        <div class="col-sm-10">
+                            <label>Nombre del instrumento</label>
+                            {{form.name}}
+                        </div>
+                        <div class="col-sm-2">
+                            <label>Estatus</label>
+                            {{form.status}}
+                        </div>
+                    </div>
+                    <div class="form-group row no-class">
+                        <div class="col-sm-10">
+                            <label>Descripción del instrumento</label>
+                            {{form.description}}
+                        </div>
+                        <div class="col-sm-2">
+                            <label>¿Es un instrumento con items variables?</label>
+                            {{form.is_complex}}
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <h4>Crear items</h4>
+                    {{ afirmations.management_form }}
+                    {% for form in afirmations.forms %}
+                        <div class="{% cycle 'row1' 'row2' %} formset_row form-group row">
+                            <div class="col-sm-11">
+                                {% for field in form.visible_fields %}
+                                    {% if forloop.first %}
+                                        {% for hidden in form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor %}
+                                    {% endif %}
+                                    {{ field.errors.as_ul }}
+                                    {% if forloop.counter == 2 %}
+                                        <label>Valores inversos</label>
+                                    {% endif %}
+                                    {{field}}
+                                {% endfor %}
+                                <div class="hr-line-dashed"></div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="hr-line-dashed"></div>
+                    <div class="text-right">
+                        <a href="{% url 'index' %}" class="btn btn-white">Cancelar</a>
+                        <input type="submit" value="Aceptar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+            
+    </div>
+</div>
+{% endblock content %}
+
+{% block custom_js %}
+
+<script type="text/javascript">
+    $('.formset_row').formset({
+        addText: 'Agregar afirmación',
+        deleteText: 'Eliminar',
+        prefix: 'afirmation_set',
+        addCssClass: 'btn btn-primary',
+        deleteCssClass: 'btn btn-danger',
+    });
+
+    $('.no-class > div > label + *').addClass('form-control');
+    
+</script>
+
+{% endblock custom_js %}

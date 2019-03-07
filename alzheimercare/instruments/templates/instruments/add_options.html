@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>{{ instrument.name }}</h5>
+            </div>
+            <div class="ibox-content">
+                <form action="">
+                    {% if instrument.is_complex %}
+                        {% for afirmation in instrument.afirmation_set.all %}
+                            <div class="form-group row">
+                                <div class="col-sm-8 control-label">
+                                    {{afirmation.text}}
+                                </div>
+                                <div class="col-sm-4">
+                                    {% if afirmation.option_set.all %}
+                                        {% for option in afirmation.option_set.all %}
+                                            <div>
+                                                <label>
+                                                    {{option.option}}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <button class="btn btn-primary js-add-options" data-url="{% url 'add_options_modal' afirmation.pk %}">Agregar opciones</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        {% endfor %}
+                    {% else %}
+                        {% for afirmation in instrument.afirmation_set.all %}
+                            <div class="form-group row">
+                                <div class="col-sm-8 control-label">
+                                    {{afirmation.text}}
+                                </div>
+                                <div class="col-sm-4">
+                                    {% if afirmation.option_set.all %}
+                                        {% for option in afirmation.option_set.all %}
+                                            <div>
+                                                <label>
+                                                    {{option.option}}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% if forloop.first %}
+                                            <button class="btn btn-primary js-add-options" data-url="{% url 'add_options_modal' afirmation.pk %}">Agregar opciones</button>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        {% endfor %}
+                    {% endif %}
+
+                    
+                    <div class="form-group row">
+                        <div class="col-sm-3 col-sm-offset-9">
+                            <a href="{% url 'index' %}" class="btn btn-white">Regresar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+
+
+{% block modal %}
+    <div id="modal-form" class="modal fade in" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock modal%}
+
+{% block custom_js %}
+    <script>
+        var loadForm = function() {
+            var btn = $(this);
+            $.ajax({
+                url: btn.data('url'),
+                type: "GET",
+                dataType: 'json',
+                beforeSend: function (){
+                    $("#modal-form").modal('show');
+                },
+                success: function (response) {
+                    $('.modal-body').html(response.data);
+                }
+            })
+            return false;
+        }
+
+        var saveForm = function() {
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                data: form.serialize(),
+                type: form.attr('method'),
+                dataType: 'json',
+                success: function (response) {
+                    if (response.is_valid){
+                        $("#modal-form").modal('hide');
+                        alert("La opciones han sido guardada exitosamente");
+                        location.reload();
+                    }else{
+                        $('.modal-body').html(response.data);
+                    }
+                }
+            });
+            return false;
+        };
+
+        $('.js-add-options').click(loadForm);
+        $('#modal-form').on('submit','.js-form-add-options', saveForm);
+    </script>
+{% endblock custom_js %}
