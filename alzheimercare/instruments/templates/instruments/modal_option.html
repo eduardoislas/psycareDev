@@ -8,15 +8,14 @@
                 <form method="post" action="{{url_post}}" class="js-form-add-options">
                     {% csrf_token %}
                     {{option_form.management_form}}
-
                     {% for form in option_form %}
                         <div class="form-group row">
                             <div class="col-sm-6">
-                                {{form.value.label}}
+                                <label>Valor</label>
                                 {{form.value}}
                             </div>
                             <div class="col-sm-6">
-                                {{form.option.label}}
+                                <label>Opción</label>
                                 {{form.option}}
                             </div>
                         </div>

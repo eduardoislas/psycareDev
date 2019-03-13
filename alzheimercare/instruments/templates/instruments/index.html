@@ -43,7 +43,7 @@
                                 </td>
                                 <td class="fa-icons">
                                     <a href="{% url 'add_options' instrument.id %}"><i class="fa fa-plus fa-lg text-navy"></i></a>
-                                    <a href="#"><i class="fa fa-pencil fa-lg text-muted"></i></a>
+                                    <a href="{% url 'edit_instrument' instrument.id %}"><i class="fa fa-pencil fa-lg text-muted"></i></a>
                                     {% if instrument.status %}
                                         <a href="{% url 'change_status_instrument' instrument.id %}" class="change-status" data-name="{{instrument.name}}" data-action="deshabilitará"><i class="fa fa-times fa-lg text-danger"></i></a>
                                     {% else %}
@@ -73,9 +73,7 @@
 
 <script>
     $(document).on('click','.change-status', function(){
-        var objectName = $('.change-status').attr('data-name');
-        var action = $('.change-status').attr('data-action')
-        return confirm("¿Estas seguro?, se " + action + " el instrumento " + objectName);
+        return confirm("¿Estás seguro?, se habilitará/deshabilitará el instrumento");
     });
 </script>
 
