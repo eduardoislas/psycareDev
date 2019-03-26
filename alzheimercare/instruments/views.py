@@ -6,6 +6,8 @@ from django.db import transaction
 from django.template.loader import render_to_string
 from django.forms import inlineformset_factory, formset_factory
 from django.core import serializers
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 from .models import Instrument, Afirmation, Option
@@ -83,7 +85,6 @@ def add_options_modal(request, afirmation_id):
     template['data'] = render_to_string('instruments/modal_option.html', {'option_form': OptionFormSet, 'url_post':reverse('add_options_modal', kwargs = {'afirmation_id':afirmation_id})})
     return JsonResponse(template)
 
-
 def change_status_instrument(request, instrument_id):
     instrument = get_object_or_404(Instrument, pk = instrument_id)
     if instrument.status:
@@ -92,7 +93,6 @@ def change_status_instrument(request, instrument_id):
         instrument.status = True
     instrument.save()
     return HttpResponseRedirect('/instrumentos/')
-
 
 def edit_instrument(request, instrument_id):
     if request.method == 'POST':

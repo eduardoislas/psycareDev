@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'instruments.apps.InstrumentsConfig',
+    'users.apps.UsersConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,6 +53,7 @@ MIDDLEWARE = [
 
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'users.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'alzheimercare.urls'
@@ -110,6 +112,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+LOGIN_URL = '/usuarios/login/'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = '/usuarios/login/'
+
+LOGIN_EXEMPT_URLS = (
+    'usuarios/login/',
+)
 
 
 # Internationalization
