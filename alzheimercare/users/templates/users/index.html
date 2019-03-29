@@ -7,36 +7,59 @@
         <div class="ibox">
             <div class="ibox-title">
                 Usuarios
+                <div class="ibox-tools">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="?status=activo">Mostrar usuarios activos</a></li>
+                        <li><a href="?status=inactivo">Mostrar usuarios inactivos</a></li>
+                        <li><a href="?status=todo">Mostrar todo</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="ibox-content">
                 <div class="table-responsive">
                     {% if users_list %}
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Usuario</th>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Tipo de usuario</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for usuario in users_list %}
-                                    <tr>
-                                        <td>{{usuario.username}}</td>
-                                        <td>{{usuario.first_name}} {{usuario.last_name}}</td>
-                                        <td>{{usuario.email}}</td>
-                                        <td>{{usuario.user_type}}</td>
-                                        <td class="fa-icons">
-                                            <a href="{% url 'edit_user' usuario.pk %}"><i class="fa fa-pencil fa-lg text-muted"></i></a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Tipo de usuario</th>
+                                <th>Estatus</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for usuario in users_list %}
+                            <tr>
+                                <td>{{usuario.username}}</td>
+                                <td>{{usuario.first_name}} {{usuario.last_name}}</td>
+                                <td>{{usuario.email}}</td>
+                                <td>{{usuario.user_type}}</td>
+                                <td>
+                                    {% if usuario.is_active%}
+                                    <span class="label label-primary">Activo</span>
+                                    {% else %}
+                                    <span class="label label-danger">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                                <td class="fa-icons">
+                                    <a href="{% url 'edit_user' usuario.pk %}"><i class="fa fa-pencil fa-lg text-muted"></i></a>
+                                    {% if usuario.is_active %}
+                                    <a href="{% url 'change_user_status' usuario.pk %}"><i class="fa fa-times fa-lg text-danger"></i></a>
+                                    {% else %}
+                                    <a href="{% url 'change_user_status' usuario.pk %}"><i class="fa fa-check fa-lg text-navy"></i></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     {% else %}
-                        <p>No hay usuarios registrados</p>
+                    <p>No hay usuarios registrados</p>
                     {% endif %}
                     <a href="{% url 'signup' %}" class="btn btn-primary">Agregar</a>
                 </div>

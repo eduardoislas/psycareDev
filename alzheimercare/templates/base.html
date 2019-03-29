@@ -40,19 +40,26 @@
                                 <li><a href="{% url 'edit_user' user.id %}">Editar usuario</a></li>
                                 <li><a href="{% url 'edit_password' user.id %}">Actualizar contraseña</a></li>
                                 <li class="divider"></li>
-                                <li><a href="{% url 'logout' %}">Logout</a></li>
+                                <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
                             </ul>
                         </div>
                         <div class="logo-element">
                             AC
                         </div>
                     </li>
-                    <li>
-                        <a href="{% url 'users' %}"><i class="fa fa-users"></i> <span class="nav-label">Usuarios</span></a>
-                    </li>
+                    {% if not user.user_type == 'cuidador'%}
+                        <li>
+                            <a href="{% url 'users' %}"><i class="fa fa-users"></i> <span class="nav-label">Usuarios</span></a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a href="{% url 'index' %}"><i class="fa fa-file-text-o"></i> <span class="nav-label">Instrumentos</span></a>
                     </li>
+                    {% if not user.user_type == 'cuidador'%}
+                        <li>
+                            <a href="{% url 'valorations' %}"><i class="fa fa-clock-o"></i> <span class="nav-label">Valoraciones</span></a>
+                        </li>
+                    {% endif %}
 
                 </ul>
 

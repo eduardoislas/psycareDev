@@ -12,6 +12,7 @@ from django.utils.decorators import method_decorator
 
 from .models import Instrument, Afirmation, Option
 from .forms import InstrumemtForm, AfirmationFormSet, OptionForm, AfirmationForm, OptionFormSet, AfirmationEditForm
+from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class
 
 # Create your views here.
 
@@ -28,10 +29,12 @@ def index(request):
     }
     return render(request, 'instruments/index.html', context)
 
+@restricted_for_caregivers
 def add_options(request, instrument_id):
     instrument = get_object_or_404(Instrument, pk = instrument_id)
     return render(request, 'instruments/add_options.html', {'instrument' : instrument})
 
+@method_decorator(restricted_for_caregivers_class, name='dispatch')
 class add_instrument(CreateView):
     model = Instrument
     fields = ['name','description','status','is_complex']
@@ -55,6 +58,7 @@ class add_instrument(CreateView):
                 afirmations.save()
         return super(add_instrument, self).form_valid(form)
 
+@restricted_for_caregivers
 def add_options_modal(request, afirmation_id):
     template = {}
     afirmation_obj = get_object_or_404(Afirmation, pk = afirmation_id)
@@ -85,6 +89,7 @@ def add_options_modal(request, afirmation_id):
     template['data'] = render_to_string('instruments/modal_option.html', {'option_form': OptionFormSet, 'url_post':reverse('add_options_modal', kwargs = {'afirmation_id':afirmation_id})})
     return JsonResponse(template)
 
+@restricted_for_caregivers
 def change_status_instrument(request, instrument_id):
     instrument = get_object_or_404(Instrument, pk = instrument_id)
     if instrument.status:
@@ -94,6 +99,7 @@ def change_status_instrument(request, instrument_id):
     instrument.save()
     return HttpResponseRedirect('/instrumentos/')
 
+@restricted_for_caregivers
 def edit_instrument(request, instrument_id):
     if request.method == 'POST':
         instrumentForm = InstrumemtForm(request.POST)
@@ -133,6 +139,7 @@ def edit_instrument(request, instrument_id):
             'afirmation_form':afirmation_formset,
         })
 
+@restricted_for_caregivers
 def edit_options(request, afirmation_id):
     template = {}
     afirmation_obj = get_object_or_404(Afirmation, pk = afirmation_id)

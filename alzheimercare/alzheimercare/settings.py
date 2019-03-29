@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'instruments.apps.InstrumentsConfig',
     'users.apps.UsersConfig',
+    'valoracion.apps.ValoracionConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

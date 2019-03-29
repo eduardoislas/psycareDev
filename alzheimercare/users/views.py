@@ -5,36 +5,65 @@ from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordChangeView
 from django.utils.decorators import method_decorator
+from django.http import HttpResponseRedirect
 
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
+from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class, verify_same_user
 
 # Create your views here.
 
+@restricted_for_caregivers
 def index(request):
+    status = request.GET.get('status')
     if request.user.user_type == 'psicologo':
-        users_list = CustomUser.objects.filter(user_type = 'cuidador')
+        if status == 'activo' or status == None:
+            users_list = CustomUser.objects.filter(user_type = 'cuidador').filter(is_active = True)
+        elif status == 'inactivo':
+            users_list = CustomUser.objects.filter(user_type = 'cuidador').filter(is_active = False)
+        else:
+            users_list = CustomUser.objects.filter(user_type = 'cuidador')
     else:
-        users_list = CustomUser.objects.filter(Q( user_type = 'cuidador') | Q( user_type = 'psicologo'))
+        if status == 'activo' or status == None:
+            users_list = CustomUser.objects.filter(Q( user_type = 'cuidador') | Q( user_type = 'psicologo')).filter(is_active = True)
+        elif status == 'inactivo':
+            users_list = CustomUser.objects.filter(Q( user_type = 'cuidador') | Q( user_type = 'psicologo')).filter(is_active = False)
+        else:
+            users_list = CustomUser.objects.filter(Q( user_type = 'cuidador') | Q( user_type = 'psicologo'))
     context = {
         'users_list' : users_list,
     }
     return render(request,'users/index.html', context)
-    
+
+@method_decorator(restricted_for_caregivers_class, name='dispatch')
 class SignUp(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('users')
     template_name = 'signup.html'
 
+@method_decorator(verify_same_user, name="dispatch")
 class UpdateUser(UpdateView):
     model = CustomUser
     form_class = CustomUserChangeForm
-    success_url = reverse_lazy('users')
+    success_url = reverse_lazy('home')
     template_name = 'users/edit.html'
     pk_url_kwarg = 'user_pk'
-    
+
+@method_decorator(verify_same_user, name="dispatch")
 class UpdatePasswordByUser(PasswordChangeView):
     model = CustomUser
     success_url = reverse_lazy('users')
     template_name = 'users/change_pass.html'
+
+@restricted_for_caregivers
+def change_status(request, user_pk):
+    user = get_object_or_404(CustomUser, pk = user_pk)
+    if user.is_active:
+        user.is_active = False
+    else:
+        user.is_active = True
+    user.save()
+    print(user.is_active)
+    return HttpResponseRedirect('/usuarios/')
+    
