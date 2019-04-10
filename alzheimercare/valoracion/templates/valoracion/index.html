@@ -17,6 +17,7 @@
                             <th>Fecha de inicio</th>
                             <th>Fecha final</th>
                             <th>Acciones</th>
+                            <th class="text-center">Activo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,6 +28,13 @@
                                 <td>{{valoration.end_date}}</td>
                                 <td class="fa-icons">
                                     <a href="{% url 'edit_valoration' valoration.id %}"><i class="fa fa-pencil text-muted"></i></a>
+                                </td>
+                                <td class="text-center">
+                                    {% if valoration.is_in_lapse %}
+                                        <i class="fa fa-check-circle text-navy fa-lg"></i>
+                                    {% else %}
+                                        <i class="fa fa-times-circle text-danger fa-lg"></i>
+                                    {% endif %}
                                 </td>
                             </tr>
                        {% endfor %}

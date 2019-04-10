@@ -8,36 +8,47 @@ from django.forms import inlineformset_factory, formset_factory
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from datetime import date
 
 
-from .models import Instrument, Afirmation, Option
+from .models import Instrument, Afirmation, Option, InstrumentAnswer, Answers
 from .forms import InstrumemtForm, AfirmationFormSet, OptionForm, AfirmationForm, OptionFormSet, AfirmationEditForm
-from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class
+from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class, only_caregiver
+from valoracion.models import Valoracion
 
 # Create your views here.
 
+@login_required
 def index(request):
-    status = request.GET.get('status')
-    if status == 'activo' or status == None:
-        instruments_list = Instrument.objects.all().filter(status=True)
-    elif status == 'inactivo':
-        instruments_list = Instrument.objects.all().filter(status=False)
+    context = {}
+    if request.user.user_type == 'cuidador':
+        valoracion = [obj for obj in Valoracion.objects.all() if obj.is_in_lapse][0]
+        instruments_list = Instrument.objects.filter(status = True)
+        instrument_answered = InstrumentAnswer.objects.filter(user = request.user).filter(valoration = valoracion)
+        context['instrument_answered'] = instrument_answered
     else:
-        instruments_list = Instrument.objects.all()
-    context = {
-        'instruments_list' : instruments_list
-    }
+        status = request.GET.get('status')
+        if status == 'activo' or status == None:
+            instruments_list = Instrument.objects.filter(status=True)
+        elif status == 'inactivo':
+            instruments_list = Instrument.objects.filter(status=False)
+        else:
+            instruments_list = Instrument.objects.all()
+            
+    context['instruments_list'] = instruments_list
     return render(request, 'instruments/index.html', context)
 
+@login_required
 @restricted_for_caregivers
 def add_options(request, instrument_id):
     instrument = get_object_or_404(Instrument, pk = instrument_id)
     return render(request, 'instruments/add_options.html', {'instrument' : instrument})
 
+@method_decorator(login_required, name='dispatch')
 @method_decorator(restricted_for_caregivers_class, name='dispatch')
 class add_instrument(CreateView):
     model = Instrument
-    fields = ['name','description','status','is_complex']
+    fields = ['name','description','instructions','status','is_complex']
     template_name = 'instruments/add_instrument.html'
     success_url = reverse_lazy('index')
     def get_context_data(self,**kwargs):
@@ -58,6 +69,7 @@ class add_instrument(CreateView):
                 afirmations.save()
         return super(add_instrument, self).form_valid(form)
 
+@login_required
 @restricted_for_caregivers
 def add_options_modal(request, afirmation_id):
     template = {}
@@ -89,6 +101,7 @@ def add_options_modal(request, afirmation_id):
     template['data'] = render_to_string('instruments/modal_option.html', {'option_form': OptionFormSet, 'url_post':reverse('add_options_modal', kwargs = {'afirmation_id':afirmation_id})})
     return JsonResponse(template)
 
+@login_required
 @restricted_for_caregivers
 def change_status_instrument(request, instrument_id):
     instrument = get_object_or_404(Instrument, pk = instrument_id)
@@ -99,6 +112,7 @@ def change_status_instrument(request, instrument_id):
     instrument.save()
     return HttpResponseRedirect('/instrumentos/')
 
+@login_required
 @restricted_for_caregivers
 def edit_instrument(request, instrument_id):
     if request.method == 'POST':
@@ -109,6 +123,7 @@ def edit_instrument(request, instrument_id):
             instrumento = Instrument.objects.get(pk=instrument_id)
             instrumento.name = instrumentForm.cleaned_data['name']
             instrumento.description = instrumentForm.cleaned_data['description']
+            instrumento.instructions = instrumentForm.cleaned_data['instructions']
             instrumento.status = instrumentForm.cleaned_data['status']
             instrumento.save()
             for form in afirmationForm.forms:
@@ -139,6 +154,7 @@ def edit_instrument(request, instrument_id):
             'afirmation_form':afirmation_formset,
         })
 
+@login_required
 @restricted_for_caregivers
 def edit_options(request, afirmation_id):
     template = {}
@@ -181,3 +197,41 @@ def edit_options(request, afirmation_id):
         OptionFormSet = OptionFormSet(instance = afirmation_obj)
     template['data'] = render_to_string('instruments/edit_modal_option.html', {'option_form': OptionFormSet, 'url_post':reverse('edit_options_modal', kwargs = {'afirmation_id':afirmation_id})})
     return JsonResponse(template)
+
+@login_required
+@only_caregiver
+def answer_instrument(request, instrument_id):
+    context = {}
+    valoracion = [obj for obj in Valoracion.objects.all() if obj.is_in_lapse][0]
+
+    if request.method == 'POST':
+        instrument = Instrument.objects.get(pk = request.POST.get('instrument_id'))
+        instrument_answer = InstrumentAnswer.objects.create(instrument = instrument, valoration = valoracion, user = request.user, answer_date = date.today())
+        afirmation_list = Afirmation.objects.filter(instrument = instrument.pk)
+        for afirmation in afirmation_list:
+            option = Option.objects.get(pk = request.POST.get('afirmation_'+str(afirmation.pk))) 
+            Answers.objects.create(instrument_answer = instrument_answer, afirmation = afirmation, option = option)
+        return HttpResponseRedirect('/instrumentos/')
+    else:
+        instrument = get_object_or_404(Instrument, pk = instrument_id)
+        if InstrumentAnswer.objects.filter(instrument = instrument).filter(valoration = valoracion).filter(user = request.user).exists():
+            return HttpResponse("Ya has contestado este instrumento")
+        context['instrument'] = instrument
+        context['valoracion'] = valoracion
+    return render(request, 'instruments/answer_instrument.html', context)
+
+@login_required
+@restricted_for_caregivers
+def instruments_results(request):
+    context = {}
+    results = InstrumentAnswer.objects.all()
+    context['results_list'] = results
+    return render(request,'instruments/results.html', context)
+
+
+@login_required
+def detail_result(request, result_id):
+    context = {}
+    result = get_object_or_404(InstrumentAnswer, pk = result_id)
+    context['result'] = result
+    return render(request, 'instruments/detail_result.html', context)

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block big_title %}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-4">
+            <h2>{{ result.instrument.name }}</h2>
+        </div>
+        <div class="col-lg-4">
+            <h2 class="text-center">{{result.user.first_name}}&nbsp;{{result.user.last_name}}</h2>
+        </div>
+        <div class="col-lg-4">
+            <h2 class="text-right">{{result.valoration.name}}</h2>
+        </div>
+    </div>
+    
+{% endblock big_title %}
+
+    
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    {% for answers in result.answers_set.all %}
+                        <h3>{{answers.afirmation.text}}</h3>
+                        <p>{{answers.option.option}}</p>
+                        <hr class="hr-dashed">
+                    {% endfor %}
+                    <a href="{% url 'instruments_results' %}" class="btn btn-white">Regresar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock content %}
+    

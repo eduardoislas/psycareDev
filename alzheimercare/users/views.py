@@ -13,7 +13,7 @@ from .models import CustomUser
 from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class, verify_same_user
 
 # Create your views here.
-
+@login_required
 @restricted_for_caregivers
 def index(request):
     status = request.GET.get('status')
@@ -36,12 +36,14 @@ def index(request):
     }
     return render(request,'users/index.html', context)
 
+@method_decorator(login_required, name="dispatch")
 @method_decorator(restricted_for_caregivers_class, name='dispatch')
 class SignUp(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('users')
     template_name = 'signup.html'
 
+@method_decorator(login_required, name="dispatch")
 @method_decorator(verify_same_user, name="dispatch")
 class UpdateUser(UpdateView):
     model = CustomUser
@@ -50,12 +52,14 @@ class UpdateUser(UpdateView):
     template_name = 'users/edit.html'
     pk_url_kwarg = 'user_pk'
 
+@method_decorator(login_required, name="dispatch")
 @method_decorator(verify_same_user, name="dispatch")
 class UpdatePasswordByUser(PasswordChangeView):
     model = CustomUser
     success_url = reverse_lazy('users')
     template_name = 'users/change_pass.html'
 
+@login_required
 @restricted_for_caregivers
 def change_status(request, user_pk):
     user = get_object_or_404(CustomUser, pk = user_pk)

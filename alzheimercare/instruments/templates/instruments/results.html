@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Resultados</h5>
+            </div>
+            <div class="ibox-content">
+                {% if results_list %}
+                    <div class="table-responsive">
+                        <table class="table table-striped dataTables">
+                            <thead>
+                                <tr>
+                                    <th>Valoracion</th>
+                                    <th>Cuidador</th>
+                                    <th>Instrumento</th>
+                                    <th>Fecha de realización</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for result in results_list %}
+                                    <tr>
+                                        <td>{{result.valoration.name}}</td>
+                                        <td>{{result.user.first_name}}&nbsp;{{result.user.last_name}}</td>
+                                        <td>{{result.instrument.name}}</td>
+                                        <td>{{result.answer_date}}</td>
+                                        <td class="fa-icons">
+                                            <a href="{% url 'detail_result' result.pk%}"> <i class="fa fa-eye fa-lg text-muted"></i> </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>Aún no hay resultados</p>
+                {% endif %}
+                <hr class="hr-dashed">
+                <a href="{% url 'index' %}" class="btn btn-white">Regresar</a>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock content %}
+
+
+
+{% block custom_js %}
+
+{% endblock custom_js %}
+    
+    

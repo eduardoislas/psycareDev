@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+
+{% block big_title %}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-8">
+            <h2>{{ instrument.name }}</h2>
+        </div>
+        <div class="col-lg-4">
+            <h2 class="text-right">{{valoracion.name}}</h2>
+        </div>
+    </div>
+{% endblock big_title %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>{{instrument.instructions}}</h5>
+            </div>
+            <div class="ibox-content">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="instrument_id" value="{{instrument.id}}">
+                    {% for afirmation in instrument.afirmation_set.all %}
+                        <div class="row form-group">
+                            <div class="col-sm-12">
+                                <h4>{{ afirmation.text }}</h4>
+                            </div>
+                            {% for option in afirmation.option_set.all %}
+                                <div class="col-sm-2">
+                                    <input type="radio" name="afirmation_{{afirmation.id}}" value="{{option.id}}" required>&nbsp;{{option.option}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <hr class="hr-dashed">
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <a href="{% url 'index' %}" class="btn btn-white">Cancelar</a>
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-6 text-right">
+                            <input type="reset" class="btn btn-warning" value="Limpiar">
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

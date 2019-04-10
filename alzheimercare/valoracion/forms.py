@@ -11,8 +11,8 @@ class ValorationForm(ModelForm):
         model = Valoracion
         exclude = ()
         widgets = {
-            'begin_date': DateInput(),
-            'end_date': DateInput(),
+            'begin_date': DateInput(format='%Y-%m-%d'),
+            'end_date': DateInput(format='%Y-%m-%d'),
         }
     def __init__(self, *args, **kwargs):
         super(ValorationForm, self).__init__(*args, **kwargs)

@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm, inlineformset_factory, Form
 
 from .models import Instrument, Afirmation, Option
 
@@ -51,8 +51,6 @@ class OptionForm(ModelForm):
             self.fields[field].widget.attrs.update({
                 'class': 'form-control'
             })
-
-
 
 
 #Inline formsets

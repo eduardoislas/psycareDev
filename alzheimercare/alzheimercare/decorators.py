@@ -39,3 +39,12 @@ def verify_same_user(function):
         else:
             return HttpResponseForbidden()
     return wrap
+
+def only_caregiver(function):
+    def wrap(request, *args, **kwargs):
+        user = get_object_or_404(CustomUser,pk=request.user.pk)
+        if not user.user_type == 'cuidador':
+            return HttpResponseForbidden()
+        else:
+            return function(request, *args, **kwargs)
+    return wrap

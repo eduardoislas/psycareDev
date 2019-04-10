@@ -25,7 +25,9 @@ SECRET_KEY = '1nfyll!y-vu5r0-i-w_r4@a3+8a4d+inrzbc9c0thu38qtmuso'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost'
+]
 
 
 # Application definition
@@ -54,7 +56,7 @@ MIDDLEWARE = [
 
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'users.middleware.LoginRequiredMiddleware',
+    # 'users.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'alzheimercare.urls'
@@ -161,3 +163,4 @@ STATICFILES_FINDERS = (
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000'
 )
+

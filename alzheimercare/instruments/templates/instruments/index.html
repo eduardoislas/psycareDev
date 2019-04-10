@@ -31,6 +31,9 @@
                                 <th>Status</th>
                                 {% endif %}
                                 <th>Acciones</th>
+                                {% if user.user_type == 'cuidador' %}
+                                <th class="text-center">Contestado</th>
+                                {% endif %}
                             </tr>
                         </thead>
                         <tbody>
@@ -47,11 +50,11 @@
                                     {% endif %}
                                 </td>
                                 {% endif %}
-
                                 <td class="fa-icons">
                                     {% if not user.user_type == 'cuidador' %}
                                         <a href="{% url 'add_options' instrument.id %}"><i class="fa fa-plus fa-lg text-navy"></i></a>
                                         <a href="{% url 'edit_instrument' instrument.id %}"><i class="fa fa-pencil fa-lg text-muted"></i></a>
+                                        <a href=""><i class="fa fa-eye fa-lg text-muted"></i></a>
                                         {% if instrument.status %}
                                             <a href="{% url 'change_status_instrument' instrument.id %}" class="change-status"
                                             data-name="{{instrument.name}}" data-action="deshabilitará"><i class="fa fa-times fa-lg text-danger"></i></a>
@@ -60,8 +63,23 @@
                                             data-name="{{instrument.name}}" data-action="habilitará"><i class="fa fa-check fa-lg text-navy"></i></a>
                                         {% endif %}
                                     {% endif %}
-                                    <a href="#"><i class="fa fa-file-text-o fa-lg text-success"></i></a>
+                                    {% if user.user_type == 'cuidador' %}
+                                        <a href="{% url 'answer_instrument' instrument.id %}"><i class="fa fa-file-text-o fa-lg text-success"></i></a>
+                                    {% endif %}
                                 </td>
+                                {% if user.user_type == 'cuidador' %}
+                                    <td class="text-center">
+                                        {% if instrument_answered %}
+                                            {% for ia in instrument_answered %}
+                                                {% if ia.instrument == instrument %}
+                                                    <i class="fa fa-check-circle text-navy fa-lg"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <i class="fa fa-times-circle text-danger fa-lg"></i>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -72,11 +90,13 @@
                 {% endif %}
                 {% if not user.user_type == 'cuidador' %}
                 <a href="{% url 'add_instrument' %}" class="btn btn-primary">Agregar</a>
+                <a href="{% url 'instruments_results' %}" class="btn btn-success text-right">Ver resultados</a>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+
 
 
 {% endblock content %}
