@@ -12,9 +12,10 @@ from datetime import date
 
 
 from .models import Instrument, Afirmation, Option, InstrumentAnswer, Answers
-from .forms import InstrumemtForm, AfirmationFormSet, OptionForm, AfirmationForm, OptionFormSet, AfirmationEditForm
+from .forms import InstrumemtForm, AfirmationFormSet, OptionForm, AfirmationForm, OptionFormSet, AfirmationEditForm, ResultsFilter
 from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class, only_caregiver
 from valoracion.models import Valoracion
+from users.models import CustomUser
 
 # Create your views here.
 
@@ -224,8 +225,27 @@ def answer_instrument(request, instrument_id):
 @restricted_for_caregivers
 def instruments_results(request):
     context = {}
-    results = InstrumentAnswer.objects.all()
+    if request.method == 'POST':
+        filter_form = ResultsFilter(request.POST)
+        if filter_form.is_valid():
+            if filter_form.cleaned_data['caregivers'] is not None and filter_form.cleaned_data['valorations'] is not None:
+                caregiver = CustomUser.objects.get(pk = filter_form.cleaned_data['caregivers'].id)
+                valoration = Valoracion.objects.get(pk = filter_form.cleaned_data['valorations'].id)
+                results = InstrumentAnswer.objects.filter(user = caregiver).filter(valoration = valoration)
+            elif filter_form.cleaned_data['caregivers'] is None and filter_form.cleaned_data['valorations'] is None:
+                results = InstrumentAnswer.objects.all()
+            elif filter_form.cleaned_data['caregivers'] is None:
+                valoration = Valoracion.objects.get(pk = filter_form.cleaned_data['valorations'].id)
+                results = InstrumentAnswer.objects.filter(valoration = valoration)
+            elif filter_form.cleaned_data['valorations'] is None:
+                caregiver = CustomUser.objects.get(pk = filter_form.cleaned_data['caregivers'].id)
+                results = InstrumentAnswer.objects.filter(user = caregiver)
+    else:
+        results = InstrumentAnswer.objects.all()
+
+    form  = ResultsFilter()
     context['results_list'] = results
+    context['form'] = form
     return render(request,'instruments/results.html', context)
 
 
@@ -235,3 +255,11 @@ def detail_result(request, result_id):
     result = get_object_or_404(InstrumentAnswer, pk = result_id)
     context['result'] = result
     return render(request, 'instruments/detail_result.html', context)
+
+@login_required
+@restricted_for_caregivers
+def preview_instruments(request, instrument_id):
+    context = {}
+    instrument = get_object_or_404(Instrument, pk = instrument_id)
+    context['instrument'] = instrument
+    return render(request, 'instruments/preview.html', context)

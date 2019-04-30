@@ -56,7 +56,6 @@ MIDDLEWARE = [
 
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'users.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'alzheimercare.urls'
@@ -126,6 +125,16 @@ LOGIN_EXEMPT_URLS = (
     'usuarios/login/',
 )
 
+### Email 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -161,6 +170,6 @@ STATICFILES_FINDERS = (
 )
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8000'
+    'http://localhost:8080'
 )
 

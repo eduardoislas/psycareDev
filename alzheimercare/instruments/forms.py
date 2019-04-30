@@ -2,6 +2,8 @@ from django import forms
 from django.forms import ModelForm, inlineformset_factory, Form
 
 from .models import Instrument, Afirmation, Option
+from users.models import CustomUser
+from valoracion.models import Valoracion
 
 class InstrumemtForm(ModelForm):
     class Meta:
@@ -51,6 +53,26 @@ class OptionForm(ModelForm):
             self.fields[field].widget.attrs.update({
                 'class': 'form-control'
             })
+
+class CaregiverChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return '{firstname} {lastname}'.format(firstname = obj.first_name, lastname = obj.last_name)
+
+class ValorationChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return '{name}'.format(name = obj.name)
+
+class ResultsFilter(Form):
+    caregivers = CaregiverChoiceField(queryset=CustomUser.objects.filter(user_type='cuidador'), required= False)
+    valorations = ValorationChoiceField(queryset=Valoracion.objects.all(), required = False)
+    def __init__(self, *args, **kwargs):
+        super(ResultsFilter, self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
+
+
 
 
 #Inline formsets

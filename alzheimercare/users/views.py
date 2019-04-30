@@ -3,9 +3,11 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.views import PasswordChangeView
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
+from django.core.mail import send_mail
 
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
@@ -36,12 +38,37 @@ def index(request):
     }
     return render(request,'users/index.html', context)
 
-@method_decorator(login_required, name="dispatch")
-@method_decorator(restricted_for_caregivers_class, name='dispatch')
-class SignUp(CreateView):
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('users')
-    template_name = 'signup.html'
+# @method_decorator(login_required, name="dispatch")
+# @method_decorator(restricted_for_caregivers_class, name='dispatch')
+# class SignUp(CreateView):
+#     form_class = CustomUserCreationForm
+#     success_url = reverse_lazy('users')
+#     template_name = 'signup.html'
+
+@login_required
+@restricted_for_caregivers
+def SignUp(request):
+    context = {}
+    if request.method == 'POST':
+        user_form = CustomUserCreationForm(request.POST)
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            body = 'Su cuenta ha sido registrada exitosamente, esta es su nueva contraseña: ' + user_form.cleaned_data['password1'] + ' y podrá cambiarla cuando entre a la plataforma.' 
+            send_mail('Registro en la aplicación Alzcare', body, 'jesuslara97@gmail.com', [user_form.cleaned_data['email']])
+            user.save()
+        return HttpResponseRedirect('/usuarios/')    
+    else:
+        random_password = BaseUserManager().make_random_password()
+        form =  CustomUserCreationForm(initial={
+            'password1': random_password,
+            'password2': random_password,
+        })
+        form.fields['password1'].widget.render_value = True
+        form.fields['password2'].widget.render_value = True
+        context['form'] = form
+    return render(request,'signup.html', context)
+
+
 
 @method_decorator(login_required, name="dispatch")
 @method_decorator(verify_same_user, name="dispatch")
@@ -68,6 +95,5 @@ def change_status(request, user_pk):
     else:
         user.is_active = True
     user.save()
-    print(user.is_active)
     return HttpResponseRedirect('/usuarios/')
     

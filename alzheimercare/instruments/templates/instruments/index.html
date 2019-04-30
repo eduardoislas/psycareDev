@@ -54,7 +54,7 @@
                                     {% if not user.user_type == 'cuidador' %}
                                         <a href="{% url 'add_options' instrument.id %}"><i class="fa fa-plus fa-lg text-navy"></i></a>
                                         <a href="{% url 'edit_instrument' instrument.id %}"><i class="fa fa-pencil fa-lg text-muted"></i></a>
-                                        <a href=""><i class="fa fa-eye fa-lg text-muted"></i></a>
+                                        <a href="{% url 'preview_instruments' instrument.id %}"><i class="fa fa-eye fa-lg text-muted"></i></a>
                                         {% if instrument.status %}
                                             <a href="{% url 'change_status_instrument' instrument.id %}" class="change-status"
                                             data-name="{{instrument.name}}" data-action="deshabilitará"><i class="fa fa-times fa-lg text-danger"></i></a>

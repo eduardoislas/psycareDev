@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block big-title %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2 class="text-center">{{ instrument.name }}</h2>
+    </div>
+</div>
+{% endblock big-title %}
+
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm 12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>{{instrument.instructions}}</h5>
+            </div>
+            <div class="ibox-content">
+                {% for afirmation in instrument.afirmation_set.all %}
+                    <h4>{{afirmation.text}}</h4>
+                    <div class="row">
+                        {% for option in afirmation.option_set.all %}
+                            <div class="col-sm-2">
+                                {{option.value}} - {{ option.option }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <hr class="hr-dashed">
+                {% endfor %}
+                <a href="{% url 'index' %}" class="btn btn-white">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -9,6 +9,28 @@
                 <h5>Resultados</h5>
             </div>
             <div class="ibox-content">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.management_form }}
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <label>Cuidadores</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <label>Valoraciones</label>
+                        </div>
+                        <div class="col-sm-5">
+                            {{form.caregivers}}
+                        </div>
+                        <div class="col-sm-5">
+                            {{form.valorations}}
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-primary text-right">Filtrar</button>
+                        </div>
+                    </div>
+                </form>
+                <hr class="hr-dashed">
                 {% if results_list %}
                     <div class="table-responsive">
                         <table class="table table-striped dataTables">

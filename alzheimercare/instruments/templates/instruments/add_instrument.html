@@ -59,6 +59,20 @@
                         </div>
                     {% endfor %}
                     <div class="hr-line-dashed"></div>
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                     <div class="text-right">
                         <a href="{% url 'index' %}" class="btn btn-white">Cancelar</a>
                         <input type="submit" value="Aceptar" class="btn btn-primary">

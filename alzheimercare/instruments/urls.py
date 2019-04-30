@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import add_instrument, add_options, add_options_modal, change_status_instrument, edit_instrument, edit_options, index, answer_instrument, instruments_results, detail_result
+from .views import add_instrument, add_options, add_options_modal, change_status_instrument, edit_instrument, edit_options, index, answer_instrument, instruments_results, detail_result, preview_instruments
 
 urlpatterns = [
     path('', index, name='index'),
@@ -14,4 +14,5 @@ urlpatterns = [
     path('contestar/<int:instrument_id>', answer_instrument, name='answer_instrument'),
     path('resultados/', instruments_results, name='instruments_results'),
     path('resultados/<int:result_id>', detail_result, name='detail_result'),
+    path('preview/<int:instrument_id>', preview_instruments, name='preview_instruments')
 ]
