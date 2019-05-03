@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Agregar entrevista</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Fecha</label>
+                                {{form.date}}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Hora de inicio</label>
+                                {{form.begin_time}}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Hora de finalización</label>
+                                {{form.end_time}}
+                            </div>
+                        </div>
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

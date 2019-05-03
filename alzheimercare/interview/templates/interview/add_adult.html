@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Agregar adulto</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            {{form.interview.as_hidden}}
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <label>Nombre de la persona con el diagnóstico de Alzheimer</label>
+                                {{form.name}}
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Edad</label>
+                                {{form.age}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Domicilio</label>
+                            {{form.address}}
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>Ocupación</label>
+                                {{form.occupation}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Escolaridad</label>
+                                {{form.scholarship}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <label>Estado civil</label>
+                                {{form.marital_status}}
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Fecha de nacimiento</label>
+                                {{form.birth_date}}
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Sexo</label>
+                                {{form.genre}}
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Nacionalidad</label>
+                                {{form.nationality}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>Religión</label>
+                                {{form.religion}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Lugar de nacimiento</label>
+                                {{form.birth_location}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>¿Cuántas personas viven en tu domicilio?</label>
+                                {{form.adults_shared_location}}
+                            </div>
+                            <div class="col-sm-8">
+                                <label>¿Qué relación tienen con su familiar?</label>
+                                {{form.relationship_adults}}
+                            </div>
+                        </div>
+
+
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

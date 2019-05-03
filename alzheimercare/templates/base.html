@@ -60,6 +60,11 @@
                             <a href="{% url 'valorations' %}"><i class="fa fa-clock-o"></i> <span class="nav-label">Valoraciones</span></a>
                         </li>
                     {% endif %}
+                    {% if not user.user_type == 'cuidador'%}
+                        <li>
+                            <a href="{% url 'interviews' %}"><i class="fa fa-book"></i> <span class="nav-label">Entrevistas</span></a>
+                        </li>
+                    {% endif %}
 
                 </ul>
 

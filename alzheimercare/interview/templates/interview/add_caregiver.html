@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Agregar cuidador</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{form.adult.as_hidden}}
+                        </div>
+
+                        <div class="form-group row">
+                                <div class="col-sm-8">
+                                    <label>Nombre</label>
+                                    {{form.name}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Parentesco</label>
+                                    {{form.relationship}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label>Teléfono de casa</label>
+                                    {{form.phone}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Teléfono de oficina</label>
+                                    {{form.office_phone}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Teléfono celular</label>
+                                    {{form.cellphone}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label>Correo electrónico</label>
+                                    {{form.email}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Estado civil</label>
+                                    {{form.marital_status}}
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Religión</label>
+                                    {{form.religion}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label>Domicilio</label>
+                                    {{form.address}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Ocupación</label>
+                                    {{form.occupation}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label>¿Se le puede localizar en el trabajo?</label>
+                                    {{form.can_locate}} 
+                                </div>
+                                <div class="col-sm-8">
+                                    <label>Indique cómo</label>
+                                    {{form.how_locate}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label>¿Tiempo disponible para tratar asuntos relacionados con el adulto a su cuidado?</label>
+                                    {{form.time}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label>¿Tiempo disponible para atención del adulto en casa?</label>
+                                    {{form.house_time}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>¿Por qué es usted el cuidador principal?</label>
+                                    {{form.why}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label>¿Cuáles cree usted que serían las principales necesidades que tendría que enfrentar como cuidador de una persona con Alzheimer?</label>
+                                    {{form.needs}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label>¿Recibe usted ayuda de otros familiares para solventar los costos de la enfermedad?</label>
+                                    {{form.is_helped}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>¿De quién?</label>
+                                    {{form.who_helps}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label>¿Es un apoyo constante?</label>
+                                    {{form.is_regular}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Especifique</label>
+                                    {{form.specify}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label>Nombre de otra persona que colabore con los cuidados del adulto:</label>
+                                    {{form.alternative_person}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>¿Por qué razones le apoya esta persona? (Dinámica)</label>
+                                    {{form.alternative_person_why}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label>Teléfono</label>
+                                    {{form.alternative_person_phone}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Email</label>
+                                    {{form.alternative_person_email}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label>¿En caso de ser necesario a donde nos podemos comunicar con esa persona?</label>
+                                    {{form.where_alternative_person}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label>¿Considera que algún miembro de la familia se mantiene al margen referente a los requerimientos de atención para la persona con ALZ?</label>
+                                    {{form.margin}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label>¿Cuáles son sus argumentos?</label>
+                                    {{form.arguments}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label>¿Considera usted que en algún momento dejaría de ser cuidador?</label>
+                                    {{form.leave_caregiver}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>¿Por qué?</label>
+                                    {{form.why_leave}}
+                                </div>
+                            </div>
+
+
+
+
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

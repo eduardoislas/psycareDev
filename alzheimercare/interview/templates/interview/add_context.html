@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Agregar contexto</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            {{form.interview.as_hidden}}
+                        </div>
+                        <div class="form-group">
+                            <label>¿Cómo se enteró usted de los servicios que le ofrece la Estancia Alzheimer?</label>
+                            {{form.how}}
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>¿Tiene usted algún conocido que labore en la estancia?</label>
+                                {{form.know_person}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>¿Desde cuando la conoce?</label>
+                                {{form.when_know}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Especificaciones</label>
+                            {{form.specification}}
+                        </div>
+                        <div class="form-group">
+                            <label>¿Conoce usted los distintos servicios de apoyo que ofrece la Estancia Alzheimer Dorita Ojeda, IAP? <strong>(Hacer aclaraciones respecto a las expectativas que el familiar tiene del servicio que brinda el Centro de día, y si éstas están fuera del alcance, aclararlas)</strong></label>
+                            {{form.services}}
+                        </div>
+                        <div class="form-group">
+                            <label>De las acciones que se realizan en el centro de Día. ¿Considera que existe alguna que usted no requiera llevar a cabo?</label>
+                            {{form.actions}}
+                        </div>
+
+
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

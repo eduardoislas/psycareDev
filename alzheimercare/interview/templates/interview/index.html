@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Entrevistas</h5>
+                </div>
+                <div class="ibox-content">
+                    {% if interviews_list %}
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Entrevista</th>
+                                    <th>Fecha</th>
+                                    <th>Adulto</th>
+                                    <th>Acciones</th>
+                                    <th class="text-center">Finalizada</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for interview in interviews_list %}
+                                    <tr>
+                                        <td>{{interview.pk}}</td>
+                                        <td>{{interview.date}}</td>
+                                        <td>{{interview.adult.name}}</td>
+                                        <td><a href="{% url 'answer_interview' interview.pk %}"><i class="fa fa-plus fa-lg text-navy"></i></a></td>
+                                        <td class="text-center">
+                                            {% if interview.adult and interview.context and interview.adult.tutor and interview.adult.caregiver_set.all and interview.process %}
+                                                <i class="fa fa-check-circle text-navy fa-lg"></i>
+                                            {% else %}
+                                                <i class="fa fa-times-circle text-danger fa-lg"></i>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p>No hay entrevistas</p>
+                    {% endif %}
+                    <a href="{% url 'add_interview' %}" class="btn btn-primary">Agregar entrevista</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+    

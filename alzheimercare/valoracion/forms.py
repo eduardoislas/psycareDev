@@ -13,7 +13,7 @@ class ValorationForm(ModelForm):
 
     class Meta:
         model = Valoracion
-        fields = ['name','begin_date', 'end_date']
+        fields = ['name','begin_date','end_date']
         widgets = {
             'begin_date': DateInput(format='%Y-%m-%d'),
             'end_date': DateInput(format='%Y-%m-%d'),
@@ -46,7 +46,6 @@ class ValorationForm(ModelForm):
 
         begin_date = self.cleaned_data.get('begin_date')
         end_date = self.cleaned_data.get('end_date')
-        name_input = self.cleaned_data.get('name')
         
         name =  months[begin_date.strftime('%m')] + ' - ' + months[end_date.strftime('%m')] + ' ' + begin_date.strftime('%Y')
 

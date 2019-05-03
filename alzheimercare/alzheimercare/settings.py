@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'instruments.apps.InstrumentsConfig',
     'users.apps.UsersConfig',
     'valoracion.apps.ValoracionConfig',
+    'interview.apps.InterviewConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

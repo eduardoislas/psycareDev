@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Agregar tutor</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{form.adult.as_hidden}}
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-8">
+                                <label>Nombre</label>
+                                {{form.name}}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Parentesco</label>
+                                {{form.relationship}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Teléfono de casa</label>
+                                {{form.phone}}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Teléfono de oficina</label>
+                                {{form.office_phone}}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Teléfono celular</label>
+                                {{form.cellphone}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>Correo electrónico</label>
+                                {{form.email}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Domicilio</label>
+                                {{form.address}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label>¿Cómo fue la elección del tutor?</label>
+                                {{form.how}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label>¿Conocen las responsabilidades morales y legales que se asumen como tutor de una persona? <strong>(Hacer aclaraciones en caso de ser necesario respecto al reglamento Institucional)</strong></label>
+                                {{form.responsibilities}}
+                            </div>
+                        </div>
+
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

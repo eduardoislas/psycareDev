@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Agregar proceso</h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{form.interview.as_hidden}}
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>¿En una escala del 1 al 10 siendo 1 muy mal y 10 excelente cómo considera que se encuentra su familia en estos momentos?</label>
+                                {{form.family_rate}}
+                            </div>
+                            <div class="col-sm-8">
+                                <label>¿Explique por qué?</label>
+                                {{form.family_why}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label>¿Cómo se ha informado la familia sobre la enfermedad ALZHEIMER?</label>
+                                {{form.disease}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label>¿Qué acciones han realizado después del diagnóstico médico?</label>
+                                {{form.actions}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>¿En algún momento se han reunido como familia para abordar el tema de la enfermedad?</label>
+                                {{form.reunion}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>¿Qué acuerdos se han tomado?</label>
+                                {{form.reunion_agreements}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>¿Sino lo han hecho, a qué cree que se debe?</label>
+                                {{form.not_reunion}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>¿Han seguido al pie de la letra las indicaciones y tratamiento farmacológico del médico? (Adherencia al tratamiento)</label>
+                                {{form.indications}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>¿Cómo concibe la familia la enfermedad de Alzheimer?</label>
+                                {{form.conceive}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>¿Qué representa para ustedes en estos momentos de su vida que su familiar padezca de Alzheimer que representaba antes?</label>
+                                {{form.represent}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>¿Comparte usted con algún familiar estos sentimientos?</label>
+                                {{form.feelings}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>¿Cómo se siente una vez que platica la situación que vive?</label>
+                                {{form.situation}}
+                            </div>
+                        </div>
+                       
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>¿Cómo percibe usted los comentarios de las personas que la rodean respecto a la enfermedad de Alzheimer?</label>
+                                {{form.comments}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>¿Cuáles otras alternativas ha considerado para atender a la persona con alzhéimer aparte de nosotros?</label>
+                                {{form.alternatives}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-8">
+                                <label>¿Qué acciones realiza usted para motivar a su familiar con Alzheimer a visitar al médico y para acudir a un centro de atención?</label>
+                                {{form.motivation}}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>¿Cómo considera usted la atención que está buscando ofrecer a su familiar?</label>
+                                {{form.atention}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label>¿Por qué?</label>
+                                {{form.atention_why}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>¿Alguien de la familia han considerado recibir atención terapéutica para afrontar el proceso de la enfermedad?</label>
+                                {{form.therapy}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>¿Por qué?</label>
+                                {{form.therapy_why}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>¿Ha platicado alguna vez con el adulto sobre el tratamiento que él requiere para atender su enfermedad?</label>
+                                {{form.talk}}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>¿Cómo lo ha abordado?</label>
+                                {{form.talk_how}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label>¿Cuál es la parte más difícil que han tenido que afrontar como familia ante esta enfermedad?</label>
+                                {{form.hard_part}}
+                            </div>
+                        </div>
+                        
+
+
+
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    
