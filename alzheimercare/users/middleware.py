@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.contrib.auth.views import redirect_to_login

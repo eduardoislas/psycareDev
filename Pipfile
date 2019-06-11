@@ -7,14 +7,13 @@ verify_ssl = true
 
 [packages]
 django = "*"
-mysql-python = "*"
 mysqlclient = "*"
-pymysql = "*"
-mysql-connector-python = "*"
 pylint = "*"
 django-cors-headers = "*"
 django-widget-tweaks = "*"
 pylint-django = "*"
+weasyprint = "*"
+dj-database-url = "*"
 
 [requires]
 python_version = "3.6"

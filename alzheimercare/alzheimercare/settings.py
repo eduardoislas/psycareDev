@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for alzheimercare project.
 
@@ -11,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +28,7 @@ SECRET_KEY = '1nfyll!y-vu5r0-i-w_r4@a3+8a4d+inrzbc9c0thu38qtmuso'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost'
+    '0.0.0.0'
 ]
 
 
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'valoracion.apps.ValoracionConfig',
     'interview.apps.InterviewConfig',
+    'dashboard.apps.DashboardConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,9 +57,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+
+    
+    'users.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'alzheimercare.urls'
@@ -86,17 +91,23 @@ WSGI_APPLICATION = 'alzheimercare.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'alzcare',
-        'USER': 'alzcare',
-        'PASSWORD': 'alzcare',
-        'HOST': '127.0.0.1',
+        'NAME': 'dev_alzcare',
+        'USER': 'alzcare_user',
+        'PASSWORD': '8DVztdrCH72k2wrHuYgJQ9UqT7yFq7V7',
+        'HOST': '165.22.14.2',
         'PORT': '3306',
     }
 }
+'''
 
+DATABASE_URL = 'mysql://alzcare_user:8DVztdrCH72k2wrHuYgJQ9UqT7yFq7V7@165.22.14.2:3306/dev_alzcare'
+
+DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
+
+DATABASES['default']['OPTIONS'] = {'sql_mode':'traditional'}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -119,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'users.CustomUser'
 
 LOGIN_URL = '/usuarios/login/'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/usuarios/login/'
 
 LOGIN_EXEMPT_URLS = (
@@ -131,8 +142,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'jesuslara97@gmail.com'
+EMAIL_HOST_PASSWORD = 'icecream6969'
 EMAIL_USE_TLS = True
 
 
@@ -170,7 +181,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
 )
 
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8080'
-)
+CORS_ORIGIN_WHITELIST = [
+    'http://0.0.0.0:8000'
+]
+
 

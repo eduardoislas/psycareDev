@@ -11,6 +11,7 @@ from django.utils.decorators import method_decorator
 from datetime import date
 
 
+
 from .models import Instrument, Afirmation, Option, InstrumentAnswer, Answers
 from .forms import InstrumemtForm, AfirmationFormSet, OptionForm, AfirmationForm, OptionFormSet, AfirmationEditForm, ResultsFilter
 from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class, only_caregiver

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -75,7 +77,7 @@ def SignUp(request):
 class UpdateUser(UpdateView):
     model = CustomUser
     form_class = CustomUserChangeForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('dashboard')
     template_name = 'users/edit.html'
     pk_url_kwarg = 'user_pk'
 
