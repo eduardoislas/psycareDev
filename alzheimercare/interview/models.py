@@ -60,7 +60,8 @@ class Caregiver(models.Model):
         ('no', 'No'),
     )
     adult = models.ForeignKey(Adult, on_delete = models.CASCADE)
-    name = models.CharField(max_length = 50)
+    first_name = models.CharField(max_length = 50)
+    last_name = models.CharField(max_length = 50, blank=True, null=True)
     relationship = models.CharField(max_length = 15)
     phone = models.CharField(max_length = 20)
     office_phone = models.CharField(max_length = 20)
@@ -89,6 +90,9 @@ class Caregiver(models.Model):
     arguments = models.CharField(max_length = 100)
     leave_caregiver = models.CharField(max_length = 2, choices = OPTIONS)
     why_leave = models.CharField(max_length = 100)
+
+    def __str__(self):
+        return self.first_name + ' ' + self.last_name
 
 # class Familiogram(models.Model):
 #     interview = models.ForeignKey(Interview, on_delete = models.CASCADE)

@@ -8,12 +8,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.views import PasswordChangeView
 from django.utils.decorators import method_decorator
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.core.mail import send_mail
 
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
+from interview.models import Caregiver
 from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class, verify_same_user
 
 # Create your views here.
@@ -98,4 +99,14 @@ def change_status(request, user_pk):
         user.is_active = True
     user.save()
     return HttpResponseRedirect('/usuarios/')
+
+def get_caregiver_data(request):
+    caregiver_id = request.GET.get('caregiver_id', None)
+    caregiver = get_object_or_404(Caregiver, pk = caregiver_id)
+    data = {
+        'nombre': caregiver.first_name,
+        'apellidos': caregiver.last_name,
+        'correo': caregiver.email
+    }
+    return JsonResponse(data)
     

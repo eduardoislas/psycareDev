@@ -9,7 +9,8 @@ from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from datetime import date
-
+from weasyprint import HTML
+import tempfile
 
 
 from .models import Instrument, Afirmation, Option, InstrumentAnswer, Answers
@@ -264,3 +265,28 @@ def preview_instruments(request, instrument_id):
     instrument = get_object_or_404(Instrument, pk = instrument_id)
     context['instrument'] = instrument
     return render(request, 'instruments/preview.html', context)
+
+
+
+
+@login_required
+@restricted_for_caregivers
+def caregiver_report(request):
+    context = {}
+    # Data
+
+    # Render
+    html_string = render_to_string('instruments/pdf.html', context)
+    html = HTML(string = html_string)
+    result = html.write_pdf()
+    #Response
+    response = HttpResponse(content_type = 'application/pdf;')
+    response['Content-Disposition'] = 'inline; filename = reporte.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'r')
+        response.write(output.read())
+
+    return response

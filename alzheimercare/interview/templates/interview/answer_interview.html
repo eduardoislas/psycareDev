@@ -200,8 +200,11 @@
                     {% if interview.adult.caregiver_set.all %}
                         {% for caregiver in interview.adult.caregiver_set.all %}
                             <div class="row">
-                                <div class="col-sm-8">
-                                    <h4>Nombre</h4> <p>{{caregiver.name}}</p>
+                                <div class="col-sm-4">
+                                    <h4>Nombre</h4> <p>{{caregiver.first_name}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>Apellidos</h4> <p>{{caregiver.last_name}}</p>
                                 </div>
                                 <div class="col-sm-4">
                                     <h4>Parentesco</h4> <p>{{caregiver.relationship}}</p>
