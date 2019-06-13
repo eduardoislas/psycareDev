@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h3>{{instrument.name}}</h3>
+            </div>
+            <div class="ibox-content">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{form.management_form}}
+                    {% for rank in form %}
+                    <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label>Puntaje mínimo</label>
+                                {{rank.min_points}}
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Puntaje máximo</label>
+                                {{rank.max_points}}
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Rango</label>
+                                {{rank.rank}}
+                            </div>
+                            <div class="col-sm-2">
+                                <label>¿Es activa?</label>
+                                {{rank.is_active}}
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Severidad</label>
+                                {{rank.severity}}
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                    <a href="{% url 'index' %}" class="btn btn-white">Regresar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock content %}
+    

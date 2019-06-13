@@ -25,8 +25,6 @@ class Option(models.Model):
     value = models.IntegerField()
 
 
-
-
 # Constestar instrumentos
 
 class InstrumentAnswer(models.Model):
@@ -39,3 +37,16 @@ class Answers(models.Model):
     instrument_answer = models.ForeignKey(InstrumentAnswer, on_delete=models.CASCADE)
     afirmation = models.ForeignKey(Afirmation, on_delete=models.CASCADE)
     option = models.ForeignKey(Option, on_delete=models.CASCADE)
+
+#Rangos calificacion instrumentos
+
+class InstrumentRank(models.Model):
+    instrument = models.ForeignKey(Instrument, on_delete = models.CASCADE)
+    min_points = models.IntegerField()
+    max_points = models.IntegerField()
+    rank = models.CharField(max_length = 50)
+    is_active = models.BooleanField(null = True)
+    severity = models.IntegerField(null = True)
+
+
+

@@ -1,10 +1,19 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory, Form
 
-from .models import Instrument, Afirmation, Option
+from .models import Instrument, Afirmation, Option, InstrumentRank
 from users.models import CustomUser
 from valoracion.models import Valoracion
 
+TRUE_FALSE_CHOICES = (
+    (True, 'Si'),
+    (False, 'No')
+)
+SEVERITY_CHOICES = (
+    (1, 'Baja'),
+    (2, 'Media'),
+    (3, 'Alta')
+)
 class InstrumemtForm(ModelForm):
     class Meta:
         model = Instrument
@@ -72,7 +81,57 @@ class ResultsFilter(Form):
                 'class': 'form-control'
             })
 
+class RankForm(ModelForm):
+    is_active = forms.ChoiceField(
+        choices = TRUE_FALSE_CHOICES, 
+        initial = '',
+        widget = forms.Select(),
+        required = True,
+    )
+    severity = forms.ChoiceField(
+        choices = SEVERITY_CHOICES,
+        initial = '',
+        widget = forms.Select(),
+        required = True,
+    )
 
+    class Meta:
+        model = InstrumentRank
+        exclude = ['instrument']
+        
+    
+    def __init__(self, *args, **kwargs):
+        super(RankForm, self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
+
+class RankEditForm(ModelForm):
+    rank_id = forms.IntegerField(required=True)
+    
+    is_active = forms.ChoiceField(
+        choices = TRUE_FALSE_CHOICES, 
+        initial = '',
+        widget = forms.Select(),
+        required = True,
+    )
+    severity = forms.ChoiceField(
+        choices = SEVERITY_CHOICES,
+        initial = '',
+        widget = forms.Select(),
+        required = True,
+    )
+    class Meta:
+        model = InstrumentRank
+        exclude = ['instrument']
+    
+    def __init__(self, *args, **kwargs):
+        super(RankEditForm, self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
 
 
 #Inline formsets

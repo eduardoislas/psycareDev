@@ -86,7 +86,7 @@ class UpdateUser(UpdateView):
 @method_decorator(verify_same_user, name="dispatch")
 class UpdatePasswordByUser(PasswordChangeView):
     model = CustomUser
-    success_url = reverse_lazy('users')
+    success_url = reverse_lazy('dashboard')
     template_name = 'users/change_pass.html'
 
 @login_required

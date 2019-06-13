@@ -13,8 +13,8 @@ from weasyprint import HTML
 import tempfile
 
 
-from .models import Instrument, Afirmation, Option, InstrumentAnswer, Answers
-from .forms import InstrumemtForm, AfirmationFormSet, OptionForm, AfirmationForm, OptionFormSet, AfirmationEditForm, ResultsFilter
+from .models import Instrument, Afirmation, Option, InstrumentAnswer, Answers, InstrumentRank
+from .forms import InstrumemtForm, AfirmationFormSet, OptionForm, AfirmationForm, OptionFormSet, AfirmationEditForm, ResultsFilter, RankForm, RankEditForm
 from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class, only_caregiver
 from valoracion.models import Valoracion
 from users.models import CustomUser
@@ -266,7 +266,67 @@ def preview_instruments(request, instrument_id):
     context['instrument'] = instrument
     return render(request, 'instruments/preview.html', context)
 
+@login_required
+@restricted_for_caregivers
+def add_rank(request, instrument_id):
+    context = {} 
+    instrument = get_object_or_404(Instrument, pk = instrument_id)
+    if request.method == 'POST':
+        RankFormset = formset_factory(form = RankForm, extra = 0)
+        rank_formset = RankFormset(request.POST)
+        if rank_formset.is_valid():
+            for form in rank_formset:
+                if form.has_changed():
+                    rank = form.save(commit = False)
+                    rank.instrument = instrument
+                    rank.save()
+        return HttpResponseRedirect('/instrumentos/')
+    else:
+        RankFormset = formset_factory(form = RankForm, extra = 5)
+    context['form'] = RankFormset
+    context['instrument'] = instrument
+    return render(request, 'instruments/add_rank.html', context)
 
+@login_required
+@restricted_for_caregivers
+def edit_rank(request, instrument_id):
+    context = {} 
+    instrument = get_object_or_404(Instrument, pk = instrument_id)
+    if request.method == 'POST':
+        RankFormset = formset_factory(form = RankEditForm, extra = 0)
+        rank_formset = RankFormset(request.POST)
+        if rank_formset.is_valid():
+            for form in rank_formset:
+                if form.has_changed():
+                    rank = InstrumentRank.objects.get(pk = form.cleaned_data['rank_id'])
+                    rank.min_points = form.cleaned_data['min_points']
+                    rank.max_points = form.cleaned_data['max_points']
+                    rank.rank = form.cleaned_data['rank']
+                    rank.is_active = form.cleaned_data['is_active']
+                    rank.severity = form.cleaned_data['severity']
+                    rank.save()
+        return HttpResponseRedirect('/instrumentos/')
+    else:
+        
+        RankFormset = formset_factory(form = RankEditForm, extra = 5)
+        rank_list = InstrumentRank.objects.filter(instrument = instrument)
+        if rank_list:
+            data = {
+                'form-TOTAL_FORMS': rank_list.count(),
+                'form-INITIAL_FORMS': '0',
+            }
+            for a in range(len(rank_list)):
+                data['form-'+str(a)+'-rank_id'] = rank_list[a].pk
+                data['form-'+str(a)+'-min_points'] = rank_list[a].min_points
+                data['form-'+str(a)+'-max_points'] = rank_list[a].max_points
+                data['form-'+str(a)+'-rank'] = rank_list[a].rank
+                data['form-'+str(a)+'-is_active'] = rank_list[a].is_active
+                data['form-'+str(a)+'-severity'] = rank_list[a].severity
+            RankFormset = RankFormset(data)
+            
+    context['form'] = RankFormset
+    context['instrument'] = instrument
+    return render(request, 'instruments/edit_rank.html', context)
 
 
 @login_required
