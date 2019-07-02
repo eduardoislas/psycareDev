@@ -40,6 +40,7 @@
                                     <th>Cuidador</th>
                                     <th>Instrumento</th>
                                     <th>Fecha de realización</th>
+                                    <th>Puntaje</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -50,14 +51,34 @@
                                         <td>{{result.user.first_name}}&nbsp;{{result.user.last_name}}</td>
                                         <td>{{result.instrument.name}}</td>
                                         <td>{{result.answer_date}}</td>
+                                        <td>{{result.get_score}}</td>
                                         <td class="fa-icons">
                                             <a href="{% url 'detail_result' result.pk%}"> <i class="fa fa-eye fa-lg text-muted"></i> </a>
+                                            <a href="{% url 'create_report' result.pk%}"> <i class="fa fa-file fa-lg text-primary"></i> </a>
                                         </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            {% if results_list.has_previous %}
+                                <li class="page-item"><a href="?page={{results_list.previous_page_number }}">Anterior</a></li>
+                            {% else %}
+                                <li class="page-item disabled"><a href="">Anterior</a></li>
+                            {% endif %}
+                            <li class="page-item"><a class="page-link" href="#">{{ results_list.number }}</a></li>
+                            {% if results_list.has_next %}
+                                <li class="page-item"><a href="?page={{ results_list.next_page_number }}">Siguiente</a></li>
+                            {% else %}
+                                <li class="page-item disabled"><a href="">Siguiente</a></li>
+                            {% endif %}
+                            
+                        </ul>
+                    </nav>
+
                 {% else %}
                     <p>Aún no hay resultados</p>
                 {% endif %}

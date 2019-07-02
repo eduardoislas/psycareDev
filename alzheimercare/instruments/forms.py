@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm, inlineformset_factory, Form
+from django_summernote.widgets import SummernoteWidget
 
 from .models import Instrument, Afirmation, Option, InstrumentRank
 from users.models import CustomUser
@@ -132,6 +133,53 @@ class RankEditForm(ModelForm):
             self.fields[field].widget.attrs.update({
                 'class': 'form-control'
             })
+
+class ReportForm(Form):
+    conclusion = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        )
+    )
+    intervention = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        ),
+        required = False
+    )
+    education = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        ),
+        required = False
+    )
+    orientation = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        ),
+        required = False
+    )
+    group = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        ),
+        required = False
+    )
+
 
 
 #Inline formsets

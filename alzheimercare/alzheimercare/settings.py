@@ -14,6 +14,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 import dj_database_url
 
+ 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -47,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_summernote', 
 ]
 
 MIDDLEWARE = [
@@ -143,7 +146,7 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'jesuslara97@gmail.com'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_PASSWORD = 'icecream6969'
 EMAIL_USE_TLS = True
 
 
@@ -167,6 +170,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -184,5 +188,35 @@ STATICFILES_FINDERS = (
 CORS_ORIGIN_WHITELIST = [
     'http://0.0.0.0:8000'
 ]
+
+
+
+#-- SUMMERNOTE EDITOR
+SUMMERNOTE_CONFIG = {
+    'toolbar': [
+        ['style', ['style']],
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['para', ['ul', 'ol', 'height']],
+    #    ['insert', ['link', 'picture']],
+    ],
+    # You can put custom Summernote settings
+    'summernote': {
+        # As an example, using Summernote Air-mode
+        'airMode': False,
+
+        # Change editor size
+        'width': '100%',
+        'height': '300',
+
+        # Or, set editor language/locale forcely
+        'lang': 'es-MX',
+ 
+        # You can also add custom settings for external plugins
+        'print': {
+            'stylesheetUrl': '/some_static_folder/printable.css',
+        },
+    },
+}
+SUMMERNOTE_THEME = 'bs4'
 
 

@@ -16,7 +16,7 @@
                             {{form.adult.as_hidden}}
                         </div>
 
-                        <div class="form-group row">
+                            <div class="form-group row">
                                 <div class="col-sm-4">
                                     <label>Nombre</label>
                                     {{form.first_name}}
@@ -28,6 +28,16 @@
                                 <div class="col-sm-4">
                                     <label>Parentesco</label>
                                     {{form.relationship}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label>Fecha de nacimiento</label>
+                                    {{form.birth_date}}
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Sexo</label>
+                                    {{form.genre}}
                                 </div>
                             </div>
                             <div class="form-group row">

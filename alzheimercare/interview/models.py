@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date, timedelta
 
 # Create your models here.
 
@@ -12,6 +13,11 @@ class Adult(models.Model):
     GENRE_OPTIONS = (
         ('M','Masculino'),
         ('F','Femenino'),
+    )
+    PHASE_OPTION = (
+        ('leve','Leve'),
+        ('moderada', 'Moderada'),
+        ('grave', 'Grave'),
     )
     interview = models.OneToOneField(Interview, on_delete = models.CASCADE, primary_key=True)
     name = models.CharField(max_length = 50)
@@ -27,6 +33,11 @@ class Adult(models.Model):
     birth_location = models.CharField(max_length = 80)
     adults_shared_location = models.IntegerField()
     relationship_adults = models.CharField(max_length=120)
+    phase = models.CharField(max_length = 20, choices = PHASE_OPTION, null = True)
+
+    def get_age(self):
+        return date.today().year - self.birth_date.year
+
 
 class Context(models.Model):
     KNOW_PERSON_OPTIONS = (
@@ -59,9 +70,15 @@ class Caregiver(models.Model):
         ('si', 'Si'),
         ('no', 'No'),
     )
+    GENRE_OPTIONS = (
+        ('M','Masculino'),
+        ('F','Femenino'),
+    )
     adult = models.ForeignKey(Adult, on_delete = models.CASCADE)
     first_name = models.CharField(max_length = 50)
     last_name = models.CharField(max_length = 50, blank=True, null=True)
+    genre = models.CharField(max_length = 1, choices = GENRE_OPTIONS, null = True)
+    birth_date = models.DateField(auto_now=False, auto_now_add=False, null = True)
     relationship = models.CharField(max_length = 15)
     phone = models.CharField(max_length = 20)
     office_phone = models.CharField(max_length = 20)
@@ -93,6 +110,9 @@ class Caregiver(models.Model):
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+    def get_age(self):
+        return date.today().year - self.birth_date.year
 
 # class Familiogram(models.Model):
 #     interview = models.ForeignKey(Interview, on_delete = models.CASCADE)

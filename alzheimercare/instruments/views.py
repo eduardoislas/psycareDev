@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from django.urls import reverse_lazy, reverse
 from django.db import transaction
 from django.template.loader import render_to_string
@@ -10,11 +10,14 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from datetime import date
 from weasyprint import HTML
+from django.views.decorators.cache import cache_page
+from django.core.paginator import Paginator
+
 import tempfile
 
 
 from .models import Instrument, Afirmation, Option, InstrumentAnswer, Answers, InstrumentRank
-from .forms import InstrumemtForm, AfirmationFormSet, OptionForm, AfirmationForm, OptionFormSet, AfirmationEditForm, ResultsFilter, RankForm, RankEditForm
+from .forms import InstrumemtForm, AfirmationFormSet, OptionForm, AfirmationForm, OptionFormSet, AfirmationEditForm, ResultsFilter, RankForm, RankEditForm, ReportForm
 from alzheimercare.decorators import restricted_for_caregivers, restricted_for_caregivers_class, only_caregiver
 from valoracion.models import Valoracion
 from users.models import CustomUser
@@ -223,6 +226,7 @@ def answer_instrument(request, instrument_id):
         context['valoracion'] = valoracion
     return render(request, 'instruments/answer_instrument.html', context)
 
+@cache_page(60 * 480)
 @login_required
 @restricted_for_caregivers
 def instruments_results(request):
@@ -245,8 +249,11 @@ def instruments_results(request):
     else:
         results = InstrumentAnswer.objects.all()
 
+    paginator = Paginator(results, 6)
+    page = request.GET.get('page')
+    results_list = paginator.get_page(page)
     form  = ResultsFilter()
-    context['results_list'] = results
+    context['results_list'] = results_list
     context['form'] = form
     return render(request,'instruments/results.html', context)
 
@@ -328,25 +335,60 @@ def edit_rank(request, instrument_id):
     context['instrument'] = instrument
     return render(request, 'instruments/edit_rank.html', context)
 
-
+@cache_page(60 * 480)
 @login_required
 @restricted_for_caregivers
-def caregiver_report(request):
+def create_report(request, result_id):
     context = {}
-    # Data
+    result = InstrumentAnswer.objects.get(pk = result_id)
+    exception = Instrument.objects.get(name = 'APGAR')
+    list_results = InstrumentAnswer.objects.filter(user = result.user).filter(valoration = result.valoration).exclude(instrument = exception.pk)
 
-    # Render
-    html_string = render_to_string('instruments/pdf.html', context)
-    html = HTML(string = html_string)
-    result = html.write_pdf()
-    #Response
-    response = HttpResponse(content_type = 'application/pdf;')
-    response['Content-Disposition'] = 'inline; filename = reporte.pdf'
-    response['Content-Transfer-Encoding'] = 'binary'
-    with tempfile.NamedTemporaryFile(delete=True) as output:
-        output.write(result)
-        output.flush()
-        output = open(output.name, 'r')
-        response.write(output.read())
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            report_context = {}
+            # Data
+            report_context['result'] = result
+            report_context['list_results'] = list_results
+            report_context['conclusion'] = form.cleaned_data['conclusion']
+            report_context['date'] = date.today()
+            report_context['intervention'] = form.cleaned_data['intervention']
+            report_context['education'] = form.cleaned_data['education']
+            report_context['orientation'] = form.cleaned_data['orientation']
+            report_context['group'] = form.cleaned_data['group']
 
-    return response
+            # Render
+            html_string = render_to_string('instruments/pdf_template.html', report_context)
+            html = HTML(string = html_string)
+            result = html.write_pdf()
+            #Response
+            response = HttpResponse(content_type = 'application/pdf;')
+            response['Content-Disposition'] = 'attachment; filename = reporte.pdf'
+            response['Content-Transfer-Encoding'] = 'binary'
+            with tempfile.NamedTemporaryFile(delete=True) as output:
+                output.write(result)
+                output.flush()
+                output = open(output.name, 'rb')
+                response.write(output.read())
+            return response
+
+    else:
+        active_scales = result.instrument.instrumentrank_set.all()
+        counter = 0
+        for scale in active_scales:
+            if scale.is_active and not scale.instrument.name == 'APGAR':
+                counter = counter + 1
+        if counter == 0 :
+            conclusion = 'Mediante la exploración de '+ result.user.first_name +', presenta un riesgo bajo al ser cuidador principal; no presenta sobrecarga en el cuidado y se muestra estable en las escalas de valoración.</p><p>Se recomienda que asista a los grupos de apoyo que imparte el Centro de día, esto con la finalidad de seguir reforzando las habilidades que ha adquirido durante su formación como cuidador y continuar ofreciendo una calidad a su familiar, seguir fortaleciendo el vínculo que mantiene con sus familiares y estar evaluando mensualmente los roles en el cuidado, así mismo realizar tareas de esparcimiento social, con la finalidad de sacar del entorno en el que vive como cuidador. Por parte del área familiar del Centro de día se compromete a realizar sesiones mensuales para dar seguimiento tanto a la relación que mantiene con su familiar, así como a los resultados obtenidos estas valoraciones.'
+        elif counter == 1:
+            conclusion = 'Mediante la exploración de '+ result.user.first_name +', presenta un riesgo bajo al ser cuidador principal; no presenta sobrecarga en el cuidado y se muestra estable en las escalas de valoración, un indicador que se muestra activo es la depresión, sin embargo, es una emoción que comúnmente se ve activa en el rol como cuidador.</p><p>Se recomienda que asista a los grupos de apoyo que imparte el Centro de día, esto con la finalidad de seguir reforzando las habilidades que ha adquirido durante su formación como cuidador y continuar ofreciendo una calidad a su familiar, seguir fortaleciendo el vínculo que mantiene con sus hermanas y estar evaluando mensualmente los roles en el cuidado, así mismo realizar tareas de esparcimiento social, con la finalidad de sacar del entorno en el que vive como cuidador.</p><p>Por parte del área familiar del Centro de día se compromete a realizar sesiones mensuales para dar seguimiento tanto a la relación que mantiene con su familiar, así como a los resultados obtenidos estas valoraciones.'
+        elif counter >= 2:
+            conclusion = 'Mediante la exploración de '+ result.user.first_name +', presenta un riesgo moderado al ser cuidadora principal; no presenta una sobrecarga en el cuidado, sin embargo, '+ result.user.first_name +' no percibe un apoyo en el cuidado del adulto, otras escalas que se muestran activas son las de depresión y ansiedad, es importante comentar que aún no representan un problema como tal para el cuidador, pero ya son señales de alarma para su salud emocional. Se recomienda iniciar un proceso de psicoterapia, ya que, las escalas activas en las valoraciones de mayo aumentaron (depresión y ansiedad).</p><p>Con la finalidad de promover una mayor calidad de vida en el cuidador principal se hace la recomendación de iniciar un proceso terapéutico para dar el seguimiento adecuado a los indicadores de depresión y ansiedad que se encuentra activos en su tarea como cuidador. Por parte del área familiar del Centro de día se compromete a realizar sesiones mensuales para dar seguimiento tanto a la relación que mantiene con su familiar, así como a los resultados obtenidos estas valoraciones.</p><p>Continuar activa en los grupos de apoyo que el Centro de día ofrece a cuidadores y sus familiares.'
+        data = {
+            'conclusion': conclusion
+        }
+        form = ReportForm(initial = data)
+    context['form'] = form
+    context['result'] = result
+    return render(request, 'instruments/report_form.html', context)

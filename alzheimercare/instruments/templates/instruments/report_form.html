@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block big_title %}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-4">
+            <h2 class="text-left">{{result.user.first_name}} {{result.user.last_name}}</h2>
+        </div>
+        <div class="col-lg-4">
+            <h2 class="text-center">Reporte</h2>
+        </div>
+        <div class="col-lg-4">
+            <h2 class="text-right">{{result.valoration.name}}</h2>
+        </div>
+    </div>
+{% endblock big_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-content summernote_form">
+                <form action="" method="POST" target="_blank">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Conclusiones</label>
+                        {{form.conclusion}}
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label>Interveción Psicoterapéutica</label>
+                            {{form.intervention}}
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Educación en la enfermedad</label>
+                            {{form.education}}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label>Orientación Comunitaria</label>
+                            {{form.orientation}}
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Intervención Grupal</label>
+                            {{form.group}}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Crear reporte</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+{% endblock content %}
+    

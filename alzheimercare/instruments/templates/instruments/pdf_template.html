@@ -1,0 +1,219 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 400;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .nombre {
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: 300;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #d47a1f;
+        }
+
+        .header img {
+            float: left;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .mb-0 {
+            margin-bottom: 0 !important;
+        }
+
+        .mt-0 {
+            margin-top: 0 !important;
+        }
+
+        h5 u {
+            font-weight: 300;
+        }
+
+        p,
+        li {
+            font-size: 14px;
+        }
+
+        ul.recomendaciones{
+            padding-left: 0 !important;
+        }
+
+        .text-justify p {
+            text-align: justify;
+        }
+        .page{
+            width: 17cm;
+            height: 25.7cm;
+        }
+        table,
+        table tr,
+        table td{
+            border: 1px solid #000;
+            border-collapse: collapse;
+        }
+        table{
+            width: 100%;
+        }
+        table .back{
+            background-color: #d47a1f;
+        }
+        table td{
+            font-size: 14px;
+            padding: 4px;
+        }
+        .plan tr td{
+            height: 200px;
+            vertical-align: top;
+            max-width: 50%;
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="header">
+            <img src="http://www.alzobregon.org.mx/estancia/wp-content/uploads/2019/06/centro_logo_70.png">
+            <h3 class="text-right nombre">Estancia Alzheimer Dorita de Ojeda I.A.P.</h3>
+        </div>
+        <div class="clear">
+            <h4 class="text-center mb-0">INFORME DEL AREA FAMILIAR</h4>
+            <h5 class="text-center mt-0">(ZARIT, CD-RISC, HAD-A, CES-D Y DUKE)</h5>
+            <h5 class="text-center">Nombre del cuidador:
+                <u>{{result.user.first_name}}&nbsp;{{result.user.last_name}}</u>&nbsp;&nbsp;Edad:
+                <u>{{result.user.caregiver.get_age}} años</u>&nbsp;&nbsp;Parentesco: <u>{{result.user.caregiver.relationship}}</u></h5>
+            <h5 class="text-center">Nombre del adulto: <u>{{result.user.caregiver.adult.name}}</u>&nbsp;&nbsp;Edad:
+                <u>{{result.user.caregiver.adult.get_age}} años</u>&nbsp;&nbsp;Ubicado en la Fase: <u>{{result.user.caregiver.adult.phase}}</u>&nbsp;&nbsp;Fecha
+                de elaboración: <u>{{date}}</u></h5>
+        </div>
+        <p>Los resultados que se obtuvieron en los instrumentos auto administrado son los siguientes:</p>
+        <ol>
+            {% for result in list_results %}
+            <li><strong>{{result.instrument.name}}:&nbsp;</strong>{{result.get_score}}/{{result.instrument.get_max_score}}&nbsp;lo
+                que indica&nbsp;
+                {% for rank in result.instrument.instrumentrank_set.all %}
+                    {% if result.get_score >= rank.min_points and result.get_score <= rank.max_points %}
+                        {{rank.rank}}
+                    {% endif %}
+                {% endfor %}
+            </li>
+            {% endfor %}
+        </ol>
+        <p>En base a la entrevista diagnóstica y los instrumentos aplicados se detectaron elementos relacionados que
+            sugieren las siguientes áreas de oportunidad:</p>
+        <ul class="recomendaciones">
+            <li><strong>Conclusiones y recomendaciones generales</strong></li>
+        </ul>
+        <div class="text-justify">
+            <p>{{conclusion|safe}}</p>
+        </div>
+    </div>
+
+
+    <div class="page">
+        <div class="header">
+            <img src="http://www.alzobregon.org.mx/estancia/wp-content/uploads/2019/06/centro_logo_70.png">
+            <h3 class="text-right nombre">Estancia Alzheimer Dorita de Ojeda I.A.P.</h3>
+        </div>
+        <div class="clear">
+            <h5 class="text-center">MAPA DEL NIVEL DE DESGASTE DEL CUIDADOR PRINCIPAL DE PERSONAS CON ALZHEIMER</h5>
+            <h5 class="text-center">Instrumentos de Evaluación Psicológica: ZARIT, CD-RISC, HAD-A, CES-D y DUKE.</h5>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <td rowspan="2" class="text-center">ÁREAS DE EXPLORACIÓN DIAGNÓSTICA</td>
+                    <td colspan="3" class="text-center">Factor de riesgo</td>
+                </tr>
+                <tr>
+                    <td class="text-center">BAJO</td>
+                    <td class="text-center">MEDIO</td>
+                    <td class="text-center">ALTO</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in list_results %}
+                    {% for rank in result.instrument.instrumentrank_set.all %}
+                        {% if result.get_score >= rank.min_points and result.get_score <= rank.max_points %}
+                            <tr>
+                                <td>{{result.instrument.name}}</td>
+                                {% if rank.severity == 1 %}
+                                    <td class="back"></td>
+                                    <td></td>
+                                    <td></td>
+                                {% elif rank.severity == 2%}
+                                    <td class="back"></td>
+                                    <td class="back"></td>
+                                    <td></td>
+                                {% elif rank.severity == 3%}
+                                    <td class="back"></td>
+                                    <td class="back"></td>
+                                    <td class="back"></td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="page">
+        <div class="header">
+            <img src="http://www.alzobregon.org.mx/estancia/wp-content/uploads/2019/06/centro_logo_70.png">
+            <h3 class="text-right nombre">Estancia Alzheimer Dorita de Ojeda I.A.P.</h3>
+        </div>
+        <div class="clear">
+            <h5 class="text-center">Plan de atención Individualizada del Cuidador</h5>
+
+            <table class="plan">
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong><u>Intervención Psicoterapéutica</u></strong>
+                            <p>{{intervention|safe}}</p>
+                        </td>
+                        <td>
+                            <strong><u>Educación en la enfermedad</u></strong>
+                            <p>{{education|safe}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong><u>Orientación Comunitaria</u></strong>
+                            <p>{{orientation|safe}}</p>
+                        </td>
+                        <td>
+                            <strong><u>Intervención Grupal</u></strong>
+                            <p>{{group|safe}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

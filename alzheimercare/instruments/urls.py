@@ -1,7 +1,6 @@
 from django.urls import path
 
-from . import views
-from .views import add_instrument, add_options, add_options_modal, change_status_instrument, edit_instrument, edit_options, index, answer_instrument, instruments_results, detail_result, preview_instruments, add_rank, edit_rank
+from .views import add_instrument, add_options, add_options_modal, change_status_instrument, edit_instrument, edit_options, index, answer_instrument, instruments_results, detail_result, preview_instruments, add_rank, edit_rank, create_report
 
 urlpatterns = [
     path('', index, name='index'),
@@ -16,5 +15,6 @@ urlpatterns = [
     path('resultados/<int:result_id>/', detail_result, name='detail_result'),
     path('preview/<int:instrument_id>/', preview_instruments, name='preview_instruments'),
     path('<int:instrument_id>/rangos/', add_rank, name="add_ranks"),
-    path('<int:instrument_id>/rangos/edit/', edit_rank, name="edit_ranks")
+    path('<int:instrument_id>/rangos/edit/', edit_rank, name="edit_ranks"),
+    path('resultados/<int:result_id>/reporte/', create_report, name="create_report")
 ]
