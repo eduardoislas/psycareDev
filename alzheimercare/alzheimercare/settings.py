@@ -220,3 +220,5 @@ SUMMERNOTE_CONFIG = {
 SUMMERNOTE_THEME = 'bs4'
 
 
+#Static production
+STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
