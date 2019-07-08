@@ -16,6 +16,7 @@ weasyprint = "*"
 dj-database-url = "*"
 django-summernote = "*"
 python-decouple = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"
