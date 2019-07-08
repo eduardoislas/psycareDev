@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import dj_database_url
+from decouple import config
 
  
 
@@ -24,14 +25,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1nfyll!y-vu5r0-i-w_r4@a3+8a4d+inrzbc9c0thu38qtmuso'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = [
-    '0.0.0.0'
-]
+DEBUG = config('DEBUG', cast=bool)
+
+
+ALLOWED_HOSTS = [config('DOMAIN_NAME')]
 
 
 # Application definition
@@ -106,7 +107,7 @@ WSGI_APPLICATION = 'alzheimercare.wsgi.application'
 }
 '''
 
-DATABASE_URL = 'mysql://alzcare_user:8DVztdrCH72k2wrHuYgJQ9UqT7yFq7V7@165.22.14.2:3306/dev_alzcare'
+DATABASE_URL = config('DATABASE_URL')
 
 DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
@@ -143,11 +144,11 @@ LOGIN_EXEMPT_URLS = (
 ### Email 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'jesuslara97@gmail.com'
-EMAIL_HOST_PASSWORD = 'icecream6969'
-EMAIL_USE_TLS = True
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USER = config('EMAIL_USER')
+EMAIL_PASSWORD = config('EMAIL_PASSWORD')
+EMAIL_TLS = config('EMAIL_TLS')
 
 
 
@@ -185,9 +186,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
 )
 
-CORS_ORIGIN_WHITELIST = [
-    'http://0.0.0.0:8000'
-]
+CORS_ORIGIN_WHITELIST = [config('CORS_ORIGIN_WHITELIST')]
 
 
 
@@ -225,8 +224,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
 
 
 #-- HTTPS SERVER DOMAIN
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_DOMAIN = ALLOWED_HOSTS
-CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', cast=bool)
+CSRF_COOKIE_DOMAIN = config('ALLOWED_HOSTS')
+CSRF_TRUSTED_ORIGINS = config('ALLOWED_HOSTS')
 
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', cast=bool)

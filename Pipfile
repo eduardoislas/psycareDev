@@ -15,6 +15,7 @@ pylint-django = "*"
 weasyprint = "*"
 dj-database-url = "*"
 django-summernote = "*"
+python-decouple = "*"
 
 [requires]
 python_version = "3.6"
