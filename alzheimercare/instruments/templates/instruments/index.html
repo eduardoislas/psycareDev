@@ -52,24 +52,24 @@
                                 {% endif %}
                                 <td class="fa-icons">
                                     {% if not user.user_type == 'cuidador' %}
-                                        <a href="{% url 'add_options' instrument.id %}"><i class="fa fa-plus fa-lg text-navy"></i></a>
-                                        <a href="{% url 'edit_instrument' instrument.id %}"><i class="fa fa-pencil fa-lg text-muted"></i></a>
-                                        <a href="{% url 'preview_instruments' instrument.id %}"><i class="fa fa-eye fa-lg text-muted"></i></a>
+                                        <a href="{% url 'add_options' instrument.id %}" data-toggle="tooltip" title="Agregar/Editar opciones"><i class="fa fa-plus fa-lg text-navy"></i></a>
+                                        <a href="{% url 'edit_instrument' instrument.id %}" data-toggle="tooltip" title="Editar instrumentos" ><i class="fa fa-pencil fa-lg text-muted"></i></a>
+                                        <a href="{% url 'preview_instruments' instrument.id %}" data-toggle="tooltip" title="Ver detalle"><i class="fa fa-eye fa-lg text-muted"></i></a>
                                         {% if instrument.instrumentrank_set.all %}
-                                            <a href="{% url 'edit_ranks' instrument.id %}"><i class="fa fa-list fa-lg text-warning"></i></a>
+                                            <a href="{% url 'edit_ranks' instrument.id %}" data-toggle="tooltip" title="Editar rangos"><i class="fa fa-list fa-lg text-warning"></i></a>
                                         {% else %}
-                                            <a href="{% url 'add_ranks' instrument.id %}"><i class="fa fa-list fa-lg text-navy"></i></a>
+                                            <a href="{% url 'add_ranks' instrument.id %}" data-toggle="tooltip" title="Agregar opciones"><i class="fa fa-list fa-lg text-navy"></i></a>
                                         {% endif %}
                                         {% if instrument.status %}
                                             <a href="{% url 'change_status_instrument' instrument.id %}" class="change-status"
-                                            data-name="{{instrument.name}}" data-action="deshabilitará"><i class="fa fa-times fa-lg text-danger"></i></a>
+                                            data-name="{{instrument.name}}" data-action="deshabilitará" data-toggle="tooltip" title="Deshabilitar instrumento"><i class="fa fa-times fa-lg text-danger"></i></a>
                                         {% else %}
                                         <a href="{% url 'change_status_instrument' instrument.id %}" class="change-status"
-                                            data-name="{{instrument.name}}" data-action="habilitará"><i class="fa fa-check fa-lg text-navy"></i></a>
+                                            data-name="{{instrument.name}}" data-action="habilitará" data-toggle="tooltip" title="Habilitar instrumento"><i class="fa fa-check fa-lg text-navy"></i></a>
                                         {% endif %}
                                     {% endif %}
                                     {% if user.user_type == 'cuidador' %}
-                                        <a href="{% url 'answer_instrument' instrument.id %}"><i class="fa fa-file-text-o fa-lg text-success"></i></a>
+                                        <a href="{% url 'answer_instrument' instrument.id %}" data-toggle="tooltip" title="Contestar instrumento"><i class="fa fa-file-text-o fa-lg text-success"></i></a>
                                     {% endif %}
                                 </td>
                                 {% if user.user_type == 'cuidador' %}
@@ -116,3 +116,4 @@
 </script>
 
 {% endblock custom_js %}
+

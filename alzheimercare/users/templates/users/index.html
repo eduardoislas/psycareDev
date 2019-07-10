@@ -47,11 +47,11 @@
                                     {% endif %}
                                 </td>
                                 <td class="fa-icons">
-                                    <a href="{% url 'edit_user' usuario.pk %}"><i class="fa fa-pencil fa-lg text-muted"></i></a>
+                                    <a href="{% url 'edit_user' usuario.pk %}" data-toggle="tooltip" title="Editar usuario"><i class="fa fa-pencil fa-lg text-muted"></i></a>
                                     {% if usuario.is_active %}
-                                    <a href="{% url 'change_user_status' usuario.pk %}"><i class="fa fa-times fa-lg text-danger"></i></a>
+                                    <a href="{% url 'change_user_status' usuario.pk %}" data-toggle="tooltip" title="Deshabilitar usuario"><i class="fa fa-times fa-lg text-danger"></i></a>
                                     {% else %}
-                                    <a href="{% url 'change_user_status' usuario.pk %}"><i class="fa fa-check fa-lg text-navy"></i></a>
+                                    <a href="{% url 'change_user_status' usuario.pk %}" data-toggle="tooltip" title="Habilitar usuario"><i class="fa fa-check fa-lg text-navy"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -68,3 +68,4 @@
     </div>
 
     {% endblock content %}
+

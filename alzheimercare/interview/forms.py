@@ -78,6 +78,9 @@ class CaregiverForm(ModelForm):
     class Meta:
         model = Caregiver
         exclude = ()
+        widgets = {
+            'birth_date': DateInput(format='%Y-%m-%d'),
+        }
 
     def __init__(self, *args, **kwargs):
         super(CaregiverForm, self).__init__(*args, **kwargs)

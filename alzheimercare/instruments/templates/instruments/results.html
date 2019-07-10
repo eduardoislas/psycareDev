@@ -53,8 +53,8 @@
                                         <td>{{result.answer_date}}</td>
                                         <td>{{result.get_score}}</td>
                                         <td class="fa-icons">
-                                            <a href="{% url 'detail_result' result.pk%}"> <i class="fa fa-eye fa-lg text-muted"></i> </a>
-                                            <a href="{% url 'create_report' result.pk%}"> <i class="fa fa-file fa-lg text-primary"></i> </a>
+                                            <a href="{% url 'detail_result' result.pk%}" data-toggle="tooltip" title="Ver resultados"><i class="fa fa-eye fa-lg text-muted"></i> </a>
+                                            <a href="{% url 'create_report' result.pk%}" data-toggle="tooltip" title="Generar reporte"><i class="fa fa-file fa-lg text-primary"></i> </a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -91,10 +91,5 @@
     
 {% endblock content %}
 
-
-
-{% block custom_js %}
-
-{% endblock custom_js %}
     
     
