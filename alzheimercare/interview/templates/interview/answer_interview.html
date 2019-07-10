@@ -95,338 +95,342 @@
                         <a href="{% url 'add_adult' interview.pk %}" class="btn btn-primary">Agregar adulto</a>
                     {% endif %}
 
-
-                    <hr class="hr-dashed">
-                    <h3 class="m-20">Contextualización</h3>
-                    {% if interview.context %}
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>¿Cómo se enteró usted de los servicios que le ofrece la Estancia Alzheimer?</h4>
-                                <p>{{interview.context.how}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>¿Tiene usted algún conocido que labore en la estancia?</h4>
-                                <p>{{interview.context.know_person}}</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <h4>¿Desde cuando la conoce?</h4>
-                                <p>{{interview.context.when_know}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>Especificaciones</h4>
-                                <p>{{interview.context.specification}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>¿Conoce usted los distintos servicios de apoyo que ofrece la Estancia Alzheimer Dorita Ojeda, IAP? <strong>(Hacer aclaraciones respecto a las expectativas que el familiar tiene del servicio que brinda el Centro de día, y si éstas están fuera del alcance, aclararlas)</strong></h4>
-                                <p>{{interview.context.services}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>De las acciones que se realizan en el centro de Día. ¿Considera que existe alguna que usted no requiera llevar a cabo?</h4>
-                                <p>{{interview.context.actions}}</p>
-                            </div>
-                        </div>
-
-                    {% else %}
-                        <a href="{% url 'add_context' interview.pk %}" class="btn btn-primary">Agregar contextualización</a>
-                    {% endif %}
-
-
-                    <hr class="hr-dashed">
-                    <h3 class="m-20">Datos del tutor</h3>
-                    {% if interview.adult.tutor %}
-                        
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <h4>Nombre</h4>
-                                <p>{{interview.adult.tutor.name}}</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <h4>Parentesco</h4>
-                                <p>{{interview.adult.tutor.relationship}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <h4>Teléfono de casa</h4>
-                                <p>{{interview.adult.tutor.phone}}</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <h4>Teléfono de oficina</h4>
-                                <p>{{interview.adult.tutor.office_phone}}</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <h4>Teléfono celular</h4>
-                                <p>{{interview.adult.tutor.cellphone}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>Correo electrónico</h4>
-                                <p>{{interview.adult.tutor.email}}</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <h4>Domicilio</h4>
-                                <p>{{interview.adult.tutor.address}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>¿Cómo fue la elección del tutor?</h4>
-                                <p>{{interview.adult.tutor.how}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>¿Conocen las responsabilidades morales y legales que se asumen como tutor de una persona? <strong>(Hacer aclaraciones en caso de ser necesario respecto al reglamento Institucional)</strong></h4>
-                                <p>{{interview.adult.tutor.responsibilities}}</p>
-                            </div>
-                        </div>
-                    {% else %}
-                        <a href="{% url 'add_tutor' interview.pk %}" class="btn btn-primary">Agregar tutor</a>
-                    {% endif %}
-
-
-
-                    <hr class="hr-dashed">
-                    <h3 class="m-20">Datos del cuidador principal</h3>
-                    {% if interview.adult.caregiver_set.all %}
-                        {% for caregiver in interview.adult.caregiver_set.all %}
+                    {% if interview.adult %}
+                        <hr class="hr-dashed">
+                        <h3 class="m-20">Contextualización</h3>
+                        {% if interview.context %}
                             <div class="row">
-                                <div class="col-sm-4">
-                                    <h4>Nombre</h4> <p>{{caregiver.first_name}}</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>Apellidos</h4> <p>{{caregiver.last_name}}</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>Parentesco</h4> <p>{{caregiver.relationship}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <h4>Teléfono de casa</h4> <p>{{caregiver.phone}}</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>Teléfono de oficina</h4> <p>{{caregiver.office_phone}}</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>Teléfono celular</h4> <p>{{caregiver.cellphone}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <h4>Correo electrónico</h4> <p>{{caregiver.email}}</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>Estado civil</h4> <p>{{caregiver.marital_status}}</p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h4>Religión</h4> <p>{{caregiver.religion}}</p>
+                                <div class="col-sm-12">
+                                    <h4>¿Cómo se enteró usted de los servicios que le ofrece la Estancia Alzheimer?</h4>
+                                    <p>{{interview.context.how}}</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <h4>Domicilio</h4> <p>{{caregiver.address}}</p>
+                                    <h4>¿Tiene usted algún conocido que labore en la estancia?</h4>
+                                    <p>{{interview.context.know_person}}</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <h4>Ocupación</h4> <p>{{caregiver.occupation}}</p>
+                                    <h4>¿Desde cuando la conoce?</h4>
+                                    <p>{{interview.context.when_know}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Especificaciones</h4>
+                                    <p>{{interview.context.specification}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>¿Conoce usted los distintos servicios de apoyo que ofrece la Estancia Alzheimer Dorita Ojeda, IAP? <strong>(Hacer aclaraciones respecto a las expectativas que el familiar tiene del servicio que brinda el Centro de día, y si éstas están fuera del alcance, aclararlas)</strong></h4>
+                                    <p>{{interview.context.services}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>De las acciones que se realizan en el centro de Día. ¿Considera que existe alguna que usted no requiera llevar a cabo?</h4>
+                                    <p>{{interview.context.actions}}</p>
+                                </div>
+                            </div>
+
+                        {% else %}
+                            <a href="{% url 'add_context' interview.pk %}" class="btn btn-primary">Agregar contextualización</a>
+                        {% endif %}
+
+
+                        <hr class="hr-dashed">
+                        <h3 class="m-20">Datos del tutor</h3>
+                        {% if interview.adult.tutor %}
+                            
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h4>Nombre</h4>
+                                    <p>{{interview.adult.tutor.name}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>Parentesco</h4>
+                                    <p>{{interview.adult.tutor.relationship}}</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <h4>¿Se le puede localizar en el trabajo?</h4> <p>{{caregiver.can_locate}}</p>
+                                    <h4>Teléfono de casa</h4>
+                                    <p>{{interview.adult.tutor.phone}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>Teléfono de oficina</h4>
+                                    <p>{{interview.adult.tutor.office_phone}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>Teléfono celular</h4>
+                                    <p>{{interview.adult.tutor.cellphone}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>Correo electrónico</h4>
+                                    <p>{{interview.adult.tutor.email}}</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>Domicilio</h4>
+                                    <p>{{interview.adult.tutor.address}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>¿Cómo fue la elección del tutor?</h4>
+                                    <p>{{interview.adult.tutor.how}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>¿Conocen las responsabilidades morales y legales que se asumen como tutor de una persona? <strong>(Hacer aclaraciones en caso de ser necesario respecto al reglamento Institucional)</strong></h4>
+                                    <p>{{interview.adult.tutor.responsibilities}}</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'add_tutor' interview.pk %}" class="btn btn-primary">Agregar tutor</a>
+                        {% endif %}
+
+
+
+                        <hr class="hr-dashed">
+                        <h3 class="m-20">Datos del cuidador principal</h3>
+                        {% if interview.adult.caregiver_set.all %}
+                            {% for caregiver in interview.adult.caregiver_set.all %}
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <h4>Nombre</h4> <p>{{caregiver.first_name}}</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>Apellidos</h4> <p>{{caregiver.last_name}}</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>Parentesco</h4> <p>{{caregiver.relationship}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h4>Fecha de nacimiento</h4> <p>{{caregiver.birth_date}}</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <h4>Teléfono de casa</h4> <p>{{caregiver.phone}}</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <h4>Teléfono de oficina</h4> <p>{{caregiver.office_phone}}</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <h4>Teléfono celular</h4> <p>{{caregiver.cellphone}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <h4>Correo electrónico</h4> <p>{{caregiver.email}}</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>Estado civil</h4> <p>{{caregiver.marital_status}}</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h4>Religión</h4> <p>{{caregiver.religion}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>Domicilio</h4> <p>{{caregiver.address}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>Ocupación</h4> <p>{{caregiver.occupation}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <h4>¿Se le puede localizar en el trabajo?</h4> <p>{{caregiver.can_locate}}</p>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <h4>Indique cómo</h4> <p>{{caregiver.how_locate}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4>¿Tiempo disponible para tratar asuntos relacionados con el adulto a su cuidado?</h4> <p>{{caregiver.time}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>¿Tiempo disponible para atención del adulto en casa?</h4> <p>{{caregiver.house_time}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>¿Por qué es usted el cuidador principal?</h4> <p>{{caregiver.why}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4>¿Cuáles cree usted que serían las principales necesidades que tendría que enfrentar como cuidador de una persona con Alzheimer?</h4> <p>{{caregiver.needs}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>¿Recibe usted ayuda de otros familiares para solventar los costos de la enfermedad?</h4> <p>{{caregiver.is_helped}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>¿De quién?</h4> <p>{{caregiver.who_helps}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>¿Es un apoyo constante?</h4> <p>{{caregiver.is_regular}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>Especifique</h4> <p>{{caregiver.specify}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>Nombre de otra persona que colabore con los cuidados del adulto:</h4> <p>{{caregiver.alternative_person}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>¿Por qué razones le apoya esta persona? (Dinámica)</h4> <p>{{caregiver.alternative_person_why}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>Teléfono</h4> <p>{{caregiver.alternative_person_phone}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>Email</h4> <p>{{caregiver.alternative_person_email}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4>¿En caso de ser necesario a donde nos podemos comunicar con esa persona?</h4> <p>{{caregiver.where_alternative_person}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4>¿Considera que algún miembro de la familia se mantiene al margen referente a los requerimientos de atención para la persona con ALZ?</h4> <p>{{caregiver.margin}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4>¿Cuáles son sus argumentos?</h4> <p>{{caregiver.arguments}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4>¿Considera usted que en algún momento dejaría de ser cuidador?</h4> <p>{{caregiver.leave_caregiver}}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>¿Por qué?</h4> <p>{{caregiver.why_leave}}</p>
+                                    </div>
+                                </div>
+                                
+                            {% endfor %}
+                        {% else %}
+                            <a href="{% url 'add_caregiver' interview.pk %}" class="btn btn-primary">Agregar cuidador</a>
+                        {% endif %}
+
+
+                        <hr class="hr-dashed">
+                        <h3 class="m-20">Identificación del proceso que vive la familia</h3>
+                        {% if interview.process %}
+                        <div class="row">
+                                <div class="col-sm-4">
+                                    <h4>¿En una escala del 1 al 10 siendo 1 muy mal y 10 excelente cómo considera que se encuentra su familia en estos momentos?</h4> <p>{{interview.process.family_rate}}</p>
                                 </div>
                                 <div class="col-sm-8">
-                                    <h4>Indique cómo</h4> <p>{{caregiver.how_locate}}</p>
+                                    <h4>¿Explique por qué?</h4> <p>{{interview.process.family_why}}</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h4>¿Tiempo disponible para tratar asuntos relacionados con el adulto a su cuidado?</h4> <p>{{caregiver.time}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h4>¿Tiempo disponible para atención del adulto en casa?</h4> <p>{{caregiver.house_time}}</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <h4>¿Por qué es usted el cuidador principal?</h4> <p>{{caregiver.why}}</p>
+                                    <h4>¿Cómo se ha informado la familia sobre la enfermedad ALZHEIMER?</h4> <p>{{interview.process.disease}}</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h4>¿Cuáles cree usted que serían las principales necesidades que tendría que enfrentar como cuidador de una persona con Alzheimer?</h4> <p>{{caregiver.needs}}</p>
+                                    <h4>¿Qué acciones han realizado después del diagnóstico médico?</h4> <p>{{interview.process.actions}}</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <h4>¿Recibe usted ayuda de otros familiares para solventar los costos de la enfermedad?</h4> <p>{{caregiver.is_helped}}</p>
+                                    <h4>¿En algún momento se han reunido como familia para abordar el tema de la enfermedad?</h4> <p>{{interview.process.reunion}}</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <h4>¿De quién?</h4> <p>{{caregiver.who_helps}}</p>
+                                    <h4>¿Qué acuerdos se han tomado?</h4> <p>{{interview.process.reunion_agreements}}</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <h4>¿Es un apoyo constante?</h4> <p>{{caregiver.is_regular}}</p>
+                                    <h4>¿Sino lo han hecho, a qué cree que se debe?</h4> <p>{{interview.process.not_reunion}}</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <h4>Especifique</h4> <p>{{caregiver.specify}}</p>
+                                    <h4>¿Han seguido al pie de la letra las indicaciones y tratamiento farmacológico del médico? (Adherencia al tratamiento)</h4> <p>{{interview.process.indications}}</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <h4>Nombre de otra persona que colabore con los cuidados del adulto:</h4> <p>{{caregiver.alternative_person}}</p>
+                                    <h4>¿Cómo concibe la familia la enfermedad de Alzheimer?</h4> <p>{{interview.process.conceive}}</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <h4>¿Por qué razones le apoya esta persona? (Dinámica)</h4> <p>{{caregiver.alternative_person_why}}</p>
+                                    <h4>¿Qué representa para ustedes en estos momentos de su vida que su familiar padezca de Alzheimer que representaba antes?</h4> <p>{{interview.process.represent}}</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <h4>Teléfono</h4> <p>{{caregiver.alternative_person_phone}}</p>
+                                    <h4>¿Comparte usted con algún familiar estos sentimientos?</h4> <p>{{interview.process.feelings}}</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <h4>Email</h4> <p>{{caregiver.alternative_person_email}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <h4>¿En caso de ser necesario a donde nos podemos comunicar con esa persona?</h4> <p>{{caregiver.where_alternative_person}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <h4>¿Considera que algún miembro de la familia se mantiene al margen referente a los requerimientos de atención para la persona con ALZ?</h4> <p>{{caregiver.margin}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <h4>¿Cuáles son sus argumentos?</h4> <p>{{caregiver.arguments}}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h4>¿Considera usted que en algún momento dejaría de ser cuidador?</h4> <p>{{caregiver.leave_caregiver}}</p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <h4>¿Por qué?</h4> <p>{{caregiver.why_leave}}</p>
+                                    <h4>¿Cómo se siente una vez que platica la situación que vive?</h4> <p>{{interview.process.situation}}</p>
                                 </div>
                             </div>
                             
-                        {% endfor %}
-                    {% else %}
-                        <a href="{% url 'add_caregiver' interview.pk %}" class="btn btn-primary">Agregar cuidador</a>
-                    {% endif %}
-
-
-                    <hr class="hr-dashed">
-                    <h3 class="m-20">Identificación del proceso que vive la familia</h3>
-                    {% if interview.process %}
-                    <div class="row">
-                            <div class="col-sm-4">
-                                <h4>¿En una escala del 1 al 10 siendo 1 muy mal y 10 excelente cómo considera que se encuentra su familia en estos momentos?</h4> <p>{{interview.process.family_rate}}</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>¿Cómo percibe usted los comentarios de las personas que la rodean respecto a la enfermedad de Alzheimer?</h4> <p>{{interview.process.comments}}</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>¿Cuáles otras alternativas ha considerado para atender a la persona con alzhéimer aparte de nosotros?</h4> <p>{{interview.process.alternatives}}</p>
+                                </div>
                             </div>
-                            <div class="col-sm-8">
-                                <h4>¿Explique por qué?</h4> <p>{{interview.process.family_why}}</p>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h4>¿Qué acciones realiza usted para motivar a su familiar con Alzheimer a visitar al médico y para acudir a un centro de atención?</h4> <p>{{interview.process.motivation}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h4>¿Cómo considera usted la atención que está buscando ofrecer a su familiar?</h4> <p>{{interview.process.atention}}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>¿Cómo se ha informado la familia sobre la enfermedad ALZHEIMER?</h4> <p>{{interview.process.disease}}</p>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>¿Por qué?</h4> <p>{{interview.process.atention_why}}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>¿Qué acciones han realizado después del diagnóstico médico?</h4> <p>{{interview.process.actions}}</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>¿Alguien de la familia han considerado recibir atención terapéutica para afrontar el proceso de la enfermedad?</h4> <p>{{interview.process.therapy}}</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>¿Por qué?</h4> <p>{{interview.process.therapy_why}}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>¿En algún momento se han reunido como familia para abordar el tema de la enfermedad?</h4> <p>{{interview.process.reunion}}</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>¿Ha platicado alguna vez con el adulto sobre el tratamiento que él requiere para atender su enfermedad?</h4> <p>{{interview.process.talk}}</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>¿Cómo lo ha abordado?</h4> <p>{{interview.process.talk_how}}</p>
+                                </div>
                             </div>
-                            <div class="col-sm-6">
-                                <h4>¿Qué acuerdos se han tomado?</h4> <p>{{interview.process.reunion_agreements}}</p>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>¿Cuál es la parte más difícil que han tenido que afrontar como familia ante esta enfermedad?</h4> <p>{{interview.process.hard_part}}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>¿Sino lo han hecho, a qué cree que se debe?</h4> <p>{{interview.process.not_reunion}}</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <h4>¿Han seguido al pie de la letra las indicaciones y tratamiento farmacológico del médico? (Adherencia al tratamiento)</h4> <p>{{interview.process.indications}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>¿Cómo concibe la familia la enfermedad de Alzheimer?</h4> <p>{{interview.process.conceive}}</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <h4>¿Qué representa para ustedes en estos momentos de su vida que su familiar padezca de Alzheimer que representaba antes?</h4> <p>{{interview.process.represent}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>¿Comparte usted con algún familiar estos sentimientos?</h4> <p>{{interview.process.feelings}}</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <h4>¿Cómo se siente una vez que platica la situación que vive?</h4> <p>{{interview.process.situation}}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>¿Cómo percibe usted los comentarios de las personas que la rodean respecto a la enfermedad de Alzheimer?</h4> <p>{{interview.process.comments}}</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <h4>¿Cuáles otras alternativas ha considerado para atender a la persona con alzhéimer aparte de nosotros?</h4> <p>{{interview.process.alternatives}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <h4>¿Qué acciones realiza usted para motivar a su familiar con Alzheimer a visitar al médico y para acudir a un centro de atención?</h4> <p>{{interview.process.motivation}}</p>
-                            </div>
-                            <div class="col-sm-4">
-                                <h4>¿Cómo considera usted la atención que está buscando ofrecer a su familiar?</h4> <p>{{interview.process.atention}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>¿Por qué?</h4> <p>{{interview.process.atention_why}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>¿Alguien de la familia han considerado recibir atención terapéutica para afrontar el proceso de la enfermedad?</h4> <p>{{interview.process.therapy}}</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <h4>¿Por qué?</h4> <p>{{interview.process.therapy_why}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h4>¿Ha platicado alguna vez con el adulto sobre el tratamiento que él requiere para atender su enfermedad?</h4> <p>{{interview.process.talk}}</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <h4>¿Cómo lo ha abordado?</h4> <p>{{interview.process.talk_how}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>¿Cuál es la parte más difícil que han tenido que afrontar como familia ante esta enfermedad?</h4> <p>{{interview.process.hard_part}}</p>
-                            </div>
-                        </div>
-                        
-                    {% else %}
-                        <a href="{% url 'add_process' interview.pk %}" class="btn btn-primary">Agregar proceso</a>
+                            
+                        {% else %}
+                            <a href="{% url 'add_process' interview.pk %}" class="btn btn-primary">Agregar proceso</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

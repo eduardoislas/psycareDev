@@ -144,11 +144,11 @@ LOGIN_EXEMPT_URLS = (
 ### Email 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST= config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_USER = config('EMAIL_USER')
-EMAIL_PASSWORD = config('EMAIL_PASSWORD')
-EMAIL_TLS = config('EMAIL_TLS')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 
 
 
@@ -224,8 +224,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
 
 
 #-- HTTPS SERVER DOMAIN
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', cast=bool)
-CSRF_COOKIE_DOMAIN = config('ALLOWED_HOSTS')
-CSRF_TRUSTED_ORIGINS = config('ALLOWED_HOSTS')
+if config('IS_SECURE',default=False,cast=bool):
+    CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', cast=bool)
+    CSRF_COOKIE_DOMAIN = config('CSRF_COOKIE_DOMAIN')
+    CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS')
 
-SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', cast=bool)
+    SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', cast=bool)

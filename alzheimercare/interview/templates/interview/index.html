@@ -26,7 +26,7 @@
                                         <td>{{interview.pk}}</td>
                                         <td>{{interview.date}}</td>
                                         <td>{{interview.adult.name}}</td>
-                                        <td><a href="{% url 'answer_interview' interview.pk %}"><i class="fa fa-plus fa-lg text-navy"></i></a></td>
+                                        <td><a href="{% url 'answer_interview' interview.pk %}" data-toggle="tooltip" title="Contestar entrevista"><i class="fa fa-plus fa-lg text-navy"></i></a></td>
                                         <td class="text-center">
                                             {% if interview.adult and interview.context and interview.adult.tutor and interview.adult.caregiver_set.all and interview.process %}
                                                 <i class="fa fa-check-circle text-navy fa-lg"></i>
