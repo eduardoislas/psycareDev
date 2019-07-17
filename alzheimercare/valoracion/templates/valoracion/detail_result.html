@@ -29,7 +29,7 @@
                         <p>{{answers.option.option}}</p>
                         <hr class="hr-dashed">
                     {% endfor %}
-                    <a href="{% url 'instruments_results' %}" class="btn btn-white">Regresar</a>
+                    <a href="{% url 'instruments_user_results' result.valoration.pk result.user.pk %}" class="btn btn-white">Regresar</a>
                 </div>
             </div>
         </div>

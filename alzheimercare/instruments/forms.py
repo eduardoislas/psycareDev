@@ -1,6 +1,6 @@
 from django import forms
-from django.forms import ModelForm, inlineformset_factory, Form
-from django_summernote.widgets import SummernoteWidget
+from django.forms import ModelForm, inlineformset_factory
+
 
 from .models import Instrument, Afirmation, Option, InstrumentRank
 from users.models import CustomUser
@@ -64,24 +64,6 @@ class OptionForm(ModelForm):
                 'class': 'form-control'
             })
 
-class CaregiverChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj):
-        return '{firstname} {lastname}'.format(firstname = obj.first_name, lastname = obj.last_name)
-
-class ValorationChoiceField(forms.ModelChoiceField):
-    def label_from_instance(self, obj):
-        return '{name}'.format(name = obj.name)
-
-class ResultsFilter(Form):
-    caregivers = CaregiverChoiceField(queryset=CustomUser.objects.filter(user_type='cuidador'), required= False)
-    valorations = ValorationChoiceField(queryset=Valoracion.objects.all(), required = False)
-    def __init__(self, *args, **kwargs):
-        super(ResultsFilter, self).__init__(*args, **kwargs)
-        for field in iter(self.fields):
-            self.fields[field].widget.attrs.update({
-                'class': 'form-control'
-            })
-
 class RankForm(ModelForm):
     is_active = forms.ChoiceField(
         choices = TRUE_FALSE_CHOICES, 
@@ -133,52 +115,6 @@ class RankEditForm(ModelForm):
             self.fields[field].widget.attrs.update({
                 'class': 'form-control'
             })
-
-class ReportForm(Form):
-    conclusion = forms.CharField(
-        widget = SummernoteWidget(
-            attrs={
-                'width': '100%',
-                'height': '300px',
-            }
-        )
-    )
-    intervention = forms.CharField(
-        widget = SummernoteWidget(
-            attrs={
-                'width': '100%',
-                'height': '300px',
-            }
-        ),
-        required = False
-    )
-    education = forms.CharField(
-        widget = SummernoteWidget(
-            attrs={
-                'width': '100%',
-                'height': '300px',
-            }
-        ),
-        required = False
-    )
-    orientation = forms.CharField(
-        widget = SummernoteWidget(
-            attrs={
-                'width': '100%',
-                'height': '300px',
-            }
-        ),
-        required = False
-    )
-    group = forms.CharField(
-        widget = SummernoteWidget(
-            attrs={
-                'width': '100%',
-                'height': '300px',
-            }
-        ),
-        required = False
-    )
 
 
 

@@ -9,28 +9,6 @@
                 <h5>Resultados</h5>
             </div>
             <div class="ibox-content">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.management_form }}
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <label>Cuidadores</label>
-                        </div>
-                        <div class="col-sm-5">
-                            <label>Valoraciones</label>
-                        </div>
-                        <div class="col-sm-5">
-                            {{form.caregivers}}
-                        </div>
-                        <div class="col-sm-5">
-                            {{form.valorations}}
-                        </div>
-                        <div class="col-sm-2">
-                            <button type="submit" class="btn btn-primary text-right">Filtrar</button>
-                        </div>
-                    </div>
-                </form>
-                <hr class="hr-dashed">
                 {% if results_list %}
                     <div class="table-responsive">
                         <table class="table table-striped dataTables">
@@ -38,23 +16,16 @@
                                 <tr>
                                     <th>Valoracion</th>
                                     <th>Cuidador</th>
-                                    <th>Instrumento</th>
-                                    <th>Fecha de realización</th>
-                                    <th>Puntaje</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for result in results_list %}
                                     <tr>
-                                        <td>{{result.valoration.name}}</td>
-                                        <td>{{result.user.first_name}}&nbsp;{{result.user.last_name}}</td>
-                                        <td>{{result.instrument.name}}</td>
-                                        <td>{{result.answer_date}}</td>
-                                        <td>{{result.get_score}}</td>
+                                        <td>{{valoration.name}}</td>
+                                        <td>{{result.first_name}}&nbsp;{{result.last_name}}</td>
                                         <td class="fa-icons">
-                                            <a href="{% url 'detail_result' result.pk%}" data-toggle="tooltip" title="Ver resultados"><i class="fa fa-eye fa-lg text-muted"></i> </a>
-                                            <a href="{% url 'create_report' result.pk%}" data-toggle="tooltip" title="Generar reporte"><i class="fa fa-file fa-lg text-primary"></i> </a>
+                                            <a href="{% url 'instruments_user_results' valoration.id result.id %}" data-toggle="tooltip" title="Ver resultados"><i class="fa fa-list-alt text-muted"></i></a>
                                         </td>
                                     </tr>
                                 {% endfor %}

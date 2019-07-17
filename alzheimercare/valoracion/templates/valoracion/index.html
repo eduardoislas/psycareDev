@@ -28,6 +28,7 @@
                                 <td>{{valoration.end_date}}</td>
                                 <td class="fa-icons">
                                     <a href="{% url 'edit_valoration' valoration.id %}" data-toggle="tooltip" title="Ediatr valoración"><i class="fa fa-pencil text-muted"></i></a>
+                                    <a href="{% url 'instruments_results' valoration.id %}" data-toggle="tooltip" title="Ver resultados"><i class="fa fa-list-alt text-muted"></i></a>
                                 </td>
                                 <td class="text-center">
                                     {% if valoration.is_in_lapse %}

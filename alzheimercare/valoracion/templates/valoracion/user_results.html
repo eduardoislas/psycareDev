@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block big_title %}
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-6">
+            <h2>Resultados - {{ usuario.get_full_name }}</h2>
+        </div>
+        <div class="col-lg-6">
+            <h2 class="text-right">{{valoration.name}}</h2>
+        </div>
+    </div>
+    
+{% endblock big_title %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    {% if results %}
+                        <div class="table-responsive">
+                            <table class="table table-striped dataTables">
+                                <thead>
+                                    <tr>
+                                        <th>Instrumento</th>
+                                        <th>Puntución</th>
+                                        <th>Rango</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in results %}
+                                        <tr>
+                                            <td>{{result.instrument.name}}</td>
+                                            <td>{{result.get_score}}</td>
+                                            <td>
+                                                {% for rank in result.instrument.instrumentrank_set.all %}
+                                                    {% if result.get_score >= rank.min_points and result.get_score <= rank.max_points %}
+                                                        {{rank.rank}}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td class="fa-icons">
+                                                <a href="{% url 'detail_result' result.id %}" data-toggle="tooltip" title="Ver preview resultados"><i class="fa fa-eye text-muted"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p>No se han encontrado instrumentos contestados en esta valoración</p>
+                    {% endif %}
+                    <div style="display: flex;justify-content:space-between">
+                        <a href="{% url 'instruments_results' valoration.pk %}" class="btn btn-white">Regresar</a>
+                        <a href="{% url 'create_report' single_result.pk %}" class="btn btn-primary">Generar reporte</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

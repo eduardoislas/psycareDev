@@ -95,7 +95,6 @@
                 {% endif %}
                 {% if not user.user_type == 'cuidador' %}
                 <a href="{% url 'add_instrument' %}" class="btn btn-primary">Agregar</a>
-                <a href="{% url 'instruments_results' %}" class="btn btn-success text-right">Ver resultados</a>
                 {% endif %}
             </div>
         </div>

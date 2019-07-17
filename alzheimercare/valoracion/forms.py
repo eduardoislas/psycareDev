@@ -1,9 +1,11 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from django.core.exceptions import ValidationError
 from datetime import date
+from django_summernote.widgets import SummernoteWidget
 
 from .models import Valoracion
+from users.models import CustomUser
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -64,3 +66,70 @@ class ValorationForm(ModelForm):
                         self.add_error(None, ValidationError('Ya existe un periodo de valoración conformado con las fechas ingresadas.'))
         self.cleaned_data['name'] = name
         return self.cleaned_data
+
+
+class ReportForm(Form):
+    conclusion = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        )
+    )
+    intervention = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        ),
+        required = False
+    )
+    education = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        ),
+        required = False
+    )
+    orientation = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        ),
+        required = False
+    )
+    group = forms.CharField(
+        widget = SummernoteWidget(
+            attrs={
+                'width': '100%',
+                'height': '300px',
+            }
+        ),
+        required = False
+    )
+
+
+class CaregiverChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return '{firstname} {lastname}'.format(firstname = obj.first_name, lastname = obj.last_name)
+
+class ValorationChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return '{name}'.format(name = obj.name)
+
+
+class ResultsFilter(Form):
+    caregivers = CaregiverChoiceField(queryset=CustomUser.objects.filter(user_type='cuidador'), required= False)
+    valorations = ValorationChoiceField(queryset=Valoracion.objects.all(), required = False)
+    def __init__(self, *args, **kwargs):
+        super(ResultsFilter, self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
