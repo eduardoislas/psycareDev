@@ -98,7 +98,7 @@
         </div>
         <div class="clear">
             <h4 class="text-center mb-0">INFORME DEL AREA FAMILIAR</h4>
-            <h5 class="text-center mt-0">(ZARIT, CD-RISC, HAD-A, CES-D Y DUKE)</h5>
+            <h5 class="text-center mt-0">(ZARIT, CD-RISC, HAD-A, CES-D, DUKE Y APGAR)</h5>
             <h5 class="text-center">Nombre del cuidador:
                 <u>{{result.user.first_name}}&nbsp;{{result.user.last_name}}</u>&nbsp;&nbsp;Edad:
                 <u>{{result.user.caregiver.get_age}} años</u>&nbsp;&nbsp;Parentesco: <u>{{result.user.caregiver.relationship}}</u></h5>
@@ -136,8 +136,18 @@
             <h3 class="text-right nombre">Estancia Alzheimer Dorita de Ojeda I.A.P.</h3>
         </div>
         <div class="clear">
+            <h4 class="text-center mb-0">INFORME DEL AREA FAMILIAR</h4>
+            <h5 class="text-center mt-0">(ZARIT, CD-RISC, HAD-A, CES-D, DUKE Y APGAR)</h5>
+            <h5 class="text-center">Nombre del cuidador:
+                <u>{{result.user.first_name}}&nbsp;{{result.user.last_name}}</u>&nbsp;&nbsp;Edad:
+                <u>{{result.user.caregiver.get_age}} años</u>&nbsp;&nbsp;Parentesco: <u>{{result.user.caregiver.relationship}}</u></h5>
+            <h5 class="text-center">Nombre del adulto: <u>{{result.user.caregiver.adult.name}}</u>&nbsp;&nbsp;Edad:
+                <u>{{result.user.caregiver.adult.get_age}} años</u>&nbsp;&nbsp;Ubicado en la Fase: <u>{{result.user.caregiver.adult.phase}}</u>&nbsp;&nbsp;Fecha
+                de elaboración: <u>{{date}}</u></h5>
+        </div>
+        <div class="clear">
             <h5 class="text-center">MAPA DEL NIVEL DE DESGASTE DEL CUIDADOR PRINCIPAL DE PERSONAS CON ALZHEIMER</h5>
-            <h5 class="text-center">Instrumentos de Evaluación Psicológica: ZARIT, CD-RISC, HAD-A, CES-D y DUKE.</h5>
+            <h5 class="text-center">Instrumentos de Evaluación Psicológica: ZARIT, CD-RISC, HAD-A, CES-D, DUKE Y APGAR.</h5>
         </div>
         <table>
             <thead>
@@ -182,6 +192,16 @@
         <div class="header">
             <img src="http://www.alzobregon.org.mx/estancia/wp-content/uploads/2019/06/centro_logo_70.png">
             <h3 class="text-right nombre">Estancia Alzheimer Dorita de Ojeda I.A.P.</h3>
+        </div>
+        <div class="clear">
+            <h4 class="text-center mb-0">INFORME DEL AREA FAMILIAR</h4>
+            <h5 class="text-center mt-0">(ZARIT, CD-RISC, HAD-A, CES-D, DUKE Y APGAR)</h5>
+            <h5 class="text-center">Nombre del cuidador:
+                <u>{{result.user.first_name}}&nbsp;{{result.user.last_name}}</u>&nbsp;&nbsp;Edad:
+                <u>{{result.user.caregiver.get_age}} años</u>&nbsp;&nbsp;Parentesco: <u>{{result.user.caregiver.relationship}}</u></h5>
+            <h5 class="text-center">Nombre del adulto: <u>{{result.user.caregiver.adult.name}}</u>&nbsp;&nbsp;Edad:
+                <u>{{result.user.caregiver.adult.get_age}} años</u>&nbsp;&nbsp;Ubicado en la Fase: <u>{{result.user.caregiver.adult.phase}}</u>&nbsp;&nbsp;Fecha
+                de elaboración: <u>{{date}}</u></h5>
         </div>
         <div class="clear">
             <h5 class="text-center">Plan de atención Individualizada del Cuidador</h5>

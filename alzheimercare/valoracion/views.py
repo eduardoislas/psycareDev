@@ -69,6 +69,8 @@ def instruments_user_results(request, valoration_id, usuario_id):
     context['single_result'] = context['results'].first()
     context['valoration'] = get_object_or_404(Valoracion, pk = valoration_id)
     context['usuario'] = get_object_or_404(CustomUser, pk = usuario_id)
+    context['total_instruments'] = len(Instrument.objects.filter(status = True))
+    context['total_results'] = len(context['results'])
     return render(request, 'valoracion/user_results.html', context)
 
 @login_required
@@ -85,8 +87,7 @@ def detail_result(request, result_id):
 def create_report(request, result_id):
     context = {}
     result = InstrumentAnswer.objects.get(pk = result_id)
-    exception = Instrument.objects.get(name = 'APGAR')
-    list_results = InstrumentAnswer.objects.filter(user = result.user).filter(valoration = result.valoration).exclude(instrument = exception.pk)
+    list_results = InstrumentAnswer.objects.filter(user = result.user).filter(valoration = result.valoration)
 
     if request.method == 'POST':
         form = ReportForm(request.POST)

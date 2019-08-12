@@ -7,7 +7,7 @@
         <div class="col-sm-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h2>Contestar entrevista</h2>
+                    <h2>Capturar entrevista</h2>
                 </div>
                 <div class="ibox-content">
                     <div class="row">
@@ -432,6 +432,8 @@
                             <a href="{% url 'add_process' interview.pk %}" class="btn btn-primary">Agregar proceso</a>
                         {% endif %}
                     {% endif %}
+                    <hr>
+                    <a href="{% url 'interviews' %}" class="btn btn-white">Cancelar</a>
                 </div>
             </div>
         </div>

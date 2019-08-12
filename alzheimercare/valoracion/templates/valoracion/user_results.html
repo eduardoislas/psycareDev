@@ -24,7 +24,7 @@
                                 <thead>
                                     <tr>
                                         <th>Instrumento</th>
-                                        <th>Puntución</th>
+                                        <th>Puntuación</th>
                                         <th>Rango</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -54,7 +54,11 @@
                     {% endif %}
                     <div style="display: flex;justify-content:space-between">
                         <a href="{% url 'instruments_results' valoration.pk %}" class="btn btn-white">Regresar</a>
-                        <a href="{% url 'create_report' single_result.pk %}" class="btn btn-primary">Generar reporte</a>
+                        {% if total_instruments == total_results %}
+                            <a href="{% url 'create_report' single_result.pk %}" class="btn btn-primary">Generar reporte</a>
+                        {% else %}
+                            <a href="#" class="btn btn-primary disabled not_allowed">Generar reporte</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
