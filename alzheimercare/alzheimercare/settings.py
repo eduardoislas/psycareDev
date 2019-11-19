@@ -32,7 +32,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', cast=bool)
 
 
-ALLOWED_HOSTS = [config('DOMAIN_NAME')]
+ALLOWED_HOSTS = [config('DOMAIN_NAME'),'192.168.0.11']
 
 
 # Application definition
@@ -99,9 +99,9 @@ WSGI_APPLICATION = 'alzheimercare.wsgi.application'
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dev_alzcare',
-        'USER': 'alzcare_user',
-        'PASSWORD': '8DVztdrCH72k2wrHuYgJQ9UqT7yFq7V7',
-        'HOST': '165.22.14.2',
+        'USER': 'root',
+        'PASSWORD': 'alzh33d2019',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

@@ -2,3 +2,6 @@
  __pycache__/
  *.pyc
 *.env
+.vscode/settings.json
+alzheimercare/alzheimercare/settings.py
+alzheimercare/alzheimercare/__init__.py

@@ -56,8 +56,8 @@ def SignUp(request):
         user_form = CustomUserCreationForm(request.POST)
         if user_form.is_valid():
             user = user_form.save(commit=False)
-            body = 'Su cuenta ha sido registrada exitosamente, esta es su nueva contraseña: ' + user_form.cleaned_data['password1'] + ' y podrá cambiarla cuando entre a la plataforma.' 
-            send_mail('Registro en la aplicación Alzcare', body, 'jesuslara97@gmail.com', [user_form.cleaned_data['email']])
+            body = 'Bienvenido a Psycare, su cuenta ha sido registrada exitosamente, estos son sus datos de acceso:\n\nUsuario: '+ user_form.cleaned_data['username']+'\nContraseña: ' + user_form.cleaned_data['password1'] + '\n\nPodrá cambiar su contraseña cuando inicie sesión en la plataforma.' 
+            send_mail('Registro en la aplicación Psycare', body, 'psycareadmon@gmail.com', [user_form.cleaned_data['email']])
             user.save()
         return HttpResponseRedirect('/usuarios/')    
     else:
